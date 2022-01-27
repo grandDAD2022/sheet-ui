@@ -38,7 +38,7 @@ así como seguir a usuarios que se unan, ver sus publicaciones y comentar en ell
 - Interfaz de usuario
 - Publicaciones
 - Obtención de muro
-- Alamcenar datos
+- Almacenamiento de datos
 
 ## Servicios internos
 - Autenticación
