@@ -22,22 +22,27 @@ así como seguir a usuarios que se unan, ver sus publicaciones y comentar en ell
 - Publicaciones
 - Notificaciones
 - Comentarios
+- Comunidades
 
 ## Relaciones
 - 1:N
-  - Un usuario puede tener varias publicaciones
-  - Una publicación puede tener múltiples comentarios
-  - Un usuario puede tener múltiples comentarios
+  - Un usuario puede tener varias publicaciones.
+  - Una publicación puede tener múltiples comentarios.
+  - Un usuario puede crear comunidades.
 - N:N
-  - Varias notificaciones pueden llegar a varios usuarios
+  - Varios usuarios pueden pertenecer a mismas comunidades, es decir, los usuarios pueden estar o no en una comunidad, y ésta puede tener más de un usuario.
+  - Varias notificaciones pueden llegar a varios usuarios.
+  - Los usuarios podrán seguirse entre ellos, por lo que, una persona puede seguir a varios perfiles, y estos, podrían seguirle a él.
+
+## Servicios web
+- Interfaz de usuario
+- Publicaciones
+- Obtención de muro
+- Alamcenar datos
 
 ## Servicios internos
-- Interfaz de usuario
-  - Autenticación
-  - Notificaciones
-  - Publicaciones
-  - Obtención de muro
-- Almacenamiento de datos
+- Autenticación
+- Notificaciones
 - Envío de correo
 - Escalado de imágenes
 - Compresión de vídeo
