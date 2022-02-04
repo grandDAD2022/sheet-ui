@@ -18,21 +18,27 @@ así como seguir a usuarios que se unan, ver sus publicaciones y comentar en ell
 
 ## Entidades
 - Usuarios
-- Seguidos
 - Publicaciones
 - Notificaciones
-- Comentarios
 - Comunidades
 
-## Relaciones
+## Modelo Entidad/Relación
+
+![Image text](https://github.com/grandDAD2022/sheet/blob/main/img/modelo_er.png)
+
 - 1:N
-  - Un usuario puede tener varias publicaciones.
-  - Una publicación puede tener múltiples comentarios.
-  - Un usuario puede crear comunidades.
+  - Un usuario puede compartir varias publicaciones o ninguna.
+  - Las publicaciones solo pueden ser creadas por un usuario.
+  - Un usuario puede administrar (crear, modificar y eliminar) varias comunidades.
+  - Una comunidad solo puede ser administrada por un usuario.
+
 - N:N
-  - Varios usuarios pueden pertenecer a mismas comunidades, es decir, los usuarios pueden estar o no en una comunidad, y ésta puede tener más de un usuario.
-  - Varias notificaciones pueden llegar a varios usuarios.
+  - Los usuarios tienen la opción de comentar en las publicaciones, y las publicaciones podrán ser comentadas por varios usuarios (Siempre se tendrá un comentario que contendra la fecha y el usuario de la publicación, y de forma opcional una descripción).
+  - Un usuario puede estar o tener varias comunidades.
+  - Las comunidades pueden tener varios usuarios (mínimo 1).
   - Los usuarios podrán seguirse entre ellos, por lo que, una persona puede seguir a varios perfiles, y estos, podrían seguirle a él.
+  - Las comunidades pueden contener varias publicaciones, al igual que, una publicación puede estar en distintas comunidades.
+  - Los usuario recibiran varias publicaciones, además, existirán notificaciones del sistema que serán recibidas por todos los usuarios.
 
 ## Servicios web
 - Interfaz de usuario
