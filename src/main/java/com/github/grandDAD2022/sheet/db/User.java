@@ -22,6 +22,8 @@ public class User {
 	private String username;
 	private String password;
 	
+	protected User () {}
+	
 	public User(String firstName, String surname, String e_mail, String date_birth, String tl_number,
 			String bio, String username, String password) {
 		super();
