@@ -1,6 +1,6 @@
 <html>
 <body>
-	<form action="/user">
+	<form action="/signup" method="post">
 		<p>Nombre: </p>
 			<input type="text" name="firstName"/>
 		<p>Apellido: </p>
@@ -12,15 +12,13 @@
 		<p>Telephone_number: </p>
 			<input type="text" name="tl_number"/>
 		<p>Biography: </p>
-			<textarea name="bio" rows=5 cols=40></textarea>/>
+			<textarea name="bio" rows=5 cols=40></textarea>
 		<p>Username: </p>
 			<input type="text" name="username"/>
 		<p>Password: </p>
 			<input type="text" name="password"/>
 			
 		<input type="submit" value="Create"/>
-		
-		<a href="/">BACK</a>
 	</form>
 </body>
 </html>

@@ -1,43 +1,55 @@
 package com.github.grandDAD2022.sheet.controllers;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
+import org.springframework.web.bind.annotation.PostMapping;
 import com.github.grandDAD2022.sheet.db.User;
-import com.github.grandDAD2022.sheet.db.userRepository;
+import com.github.grandDAD2022.sheet.db.UserRepository;
+
+import java.util.List;
 
 @Controller
 public class MainController {
 	
 	@Autowired
-	private userRepository userRep;
+	private UserRepository userRepo;
 	
 	@GetMapping("/")
-	public String index() {
-		return "index";
+	public String index(@CookieValue(value="_uuid", required=false) String cookie) {
+		// Si no hay cookie, se devuelve la pantalla de inicio de sesión
+		return cookie != null ? "index" : "login";
 	}
 	
 	@GetMapping("/login")
-	public String login () {
-		return "login_template";
+	public String loginForm() {
+		return "login";
+	}
+	@PostMapping("/login")
+	public String login(String username, String password, HttpServletResponse response) {
+		// Busca el usuario
+		List<User> query = userRepo.findByUsername(username);
+		// Si existe, se añade una cookie
+		// TODO: Implementar Spring Security y OAuth
+		if (query.size() == 1)
+				response.addCookie(new Cookie("_uuid", String.valueOf(query.get(0).getId())));
+		return "redirect:/";
 	}
 	
-	@GetMapping("/createaccount")
-	public String createAccount (Model model, User user) {
-		
-		userRep.save(user);
-		
-		return "create_account_template";
+	@GetMapping("/signup")
+	public String signupForm() {
+		return "signup";
 	}
-	
-	@GetMapping("/user")
-	public String userPage (Model model, User user) {
-		model.addAttribute("username",user.getUsername());
-		return "userpage_template";
+	@PostMapping("/signup")
+	public String signup(User user, HttpServletResponse response) {
+		// Registra el usuario
+		userRepo.save(user);
+		// y crea una cookie
+		response.addCookie(new Cookie("_uuid", String.valueOf(user.getId())));
+		return "redirect:/";
 	}
 }
