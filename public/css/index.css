@@ -1,0 +1,34 @@
+body {
+  background: white;
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  min-height: 100vh;
+}
+
+header {
+  width: 100%;
+  height: 64px;
+  box-shadow: 0 0 12px black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* TODO: asegurar que funcione fuera de Firefox */
+#container {
+  width: 66vw;
+  margin: 32px auto;
+  display: grid;
+  gap: 8px;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: masonry;
+}
+#container > * {
+  border-radius: 8px;
+}
+
+.placeholder {
+  background: gray;
+  height: 256px;
+}
