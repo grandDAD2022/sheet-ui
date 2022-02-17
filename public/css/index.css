@@ -32,3 +32,9 @@ header {
   background: gray;
   height: 256px;
 }
+
+@media all and (max-width: 640px) {
+  #container {
+    grid-template-columns: 1fr;
+  }
+}

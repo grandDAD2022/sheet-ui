@@ -1,19 +1,17 @@
-<!doctype html>
-<html>
-  <head>
-    <meta charset="UTF-8" />
-    <title>Sheet</title>
-    <link rel="stylesheet" href="/css/index.css" />
-  </head>
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+  <head th:include="fragments/structure :: head" />
   <body>
-    <header style="font-family: Archivo; text-align: center; margin: 0; font-size: 32px;">
-      <span>Sheet</span>
-    </header>
+    
+    <header th:replace="fragments/widgets :: header"></header>
+    
     <div id="container">
       <div class="placeholder" style="height: 128px"></div>
       <div class="placeholder" style="height: 512px"></div>
       <div class="placeholder"></div>
       <div class="placeholder"></div>
     </div>
+    
   </body>
 </html>
