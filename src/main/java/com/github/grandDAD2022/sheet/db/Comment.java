@@ -75,5 +75,12 @@ public class Comment {
 	public void setAnswer(String answer) {
 		this.answer = answer;
 	}
+
+	@Override
+	public String toString() {
+		return "Comment [id=" + id + ", comment_date=" + comment_date + ", content=" + content + ", post=" + post
+				+ ", author=" + author + ", answer=" + answer + "]";
+	}
+	
 	
 }
