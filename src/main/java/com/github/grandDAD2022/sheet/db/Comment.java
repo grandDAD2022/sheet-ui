@@ -1,7 +1,5 @@
 package com.github.grandDAD2022.sheet.db;
 
-import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,16 +14,16 @@ public class Comment {
 	
 	private String comment_date;
 	private String content;
-	private Post post;
-	private User author;
-	private List<Comment> answer;
+	private String post;
+	private String author;
+	private String answer;
 	
 	protected Comment () {}
  	
-	public Comment(String comment_date, String content, Post post, User author, List<Comment> answer) {
+	public Comment(String comment_date, String content, String String, String author, String answer) {
 		this.comment_date = comment_date;
 		this.content = content;
-		this.post = post;
+		this.post = String;
 		this.author = author;
 		this.answer = answer;
 	}
@@ -54,27 +52,27 @@ public class Comment {
 		this.content = content;
 	}
 
-	public Post getPost() {
+	public String getString() {
 		return post;
 	}
 
-	public void setPost(Post post) {
-		this.post = post;
+	public void setString(String String) {
+		this.post = String;
 	}
 
-	public User getAuthor() {
+	public String getAuthor() {
 		return author;
 	}
 
-	public void setAuthor(User author) {
+	public void setAuthor(String author) {
 		this.author = author;
 	}
 
-	public List<Comment> getAnswer() {
+	public String getAnswer() {
 		return answer;
 	}
 
-	public void setAnswer(List<Comment> answer) {
+	public void setAnswer(String answer) {
 		this.answer = answer;
 	}
 	

@@ -16,10 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.github.grandDAD2022.sheet.db.Comment;
 import com.github.grandDAD2022.sheet.db.CommentRepository;
-import com.github.grandDAD2022.sheet.db.Post;
-import com.github.grandDAD2022.sheet.db.PostRepository;
-import com.github.grandDAD2022.sheet.db.User;
-import com.github.grandDAD2022.sheet.db.UserRepository;
 
 @RestController
 @RequestMapping("/comments")
@@ -27,19 +23,11 @@ public class CommentController {
 	
 	@Autowired
 	private CommentRepository comments;
-	@Autowired
-	private UserRepository users;
-	@Autowired
-	private PostRepository posts;
 	
 	@PostConstruct
 	public void init () {
 		if(comments.findAll().isEmpty()) {
-			Post p = new Post(0, "17-02-2022", "Primer post");
-			User s = new User("Pepe", "Martín", "pepe@email.es", "03-05-1999", "678123456", "Soy pepe", "pepe1991", "pass");
-			users.save(s);
-			posts.save(p);
-			comments.save(new Comment("17-02-2022", "Primer comentario", p, s, null));
+			comments.save(new Comment("17-02-2022", "Primer comentario", "", "", ""));
 		}
 	}
 	
