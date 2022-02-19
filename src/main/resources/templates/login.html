@@ -1,16 +1,14 @@
-<html>
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/structure :: head" />
 <body>
 
-	<form action="/login" method="post">
-	
-	<p> Username: </p><input type="text" name="username"/>
-	
-	<p> Password: </p><input type="text" name="password"/>
-	
-	<input type="submit" value="Log In"/>
-	
-	<a href="/signup">Sign up!</a>
-	</form>
+	<header th:replace="fragments/widgets :: header"></header>
+
+	<div id="container">
+		<div class="login" th:replace="fragments/widgets :: .login"></div>
+	</div>
 
 </body>
 </html>

@@ -1,24 +1,33 @@
-<html>
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/structure :: head" />
 <body>
-	<form action="/signup" method="post">
-		<p>Nombre: </p>
-			<input type="text" name="firstName"/>
-		<p>Apellido: </p>
-			<input type="text" name="surname"/>
-		<p>E-Mail: </p>
-			<input type="text" name="e_mail"/>
-		<p>Birth of date: </p>
-			<input type="text" name="date_birth"/>
-		<p>Telephone_number: </p>
-			<input type="text" name="tl_number"/>
-		<p>Biography: </p>
-			<textarea name="bio" rows=5 cols=40></textarea>
-		<p>Username: </p>
-			<input type="text" name="username"/>
-		<p>Password: </p>
-			<input type="text" name="password"/>
-			
-		<input type="submit" value="Create"/>
-	</form>
+
+	<header th:replace="fragments/widgets :: header"></header>
+
+	<div id="container">
+		<h2>¡Bienvenido!</h2>
+		<form action="/signup" method="post">
+			<p class="required"> Nombre de usuario</p>
+			<input type="text" name="username" placeholder="usuario" required />			
+			<p class="required"> Contraseña</p>
+			<input type="password" name="password" placeholder="correct horse battery staple" required /> 
+			<p class="required"> Correo electrónico</p>
+			<input type="email" name="e_mail" placeholder="prueba@runbox.com" required />
+			<p> Nombre</p>
+			<input type="text" name="firstName" placeholder="Yo" />
+			<p> Apellidos</p>
+			<input type="text" name="surname" placeholder="Yomínguez Yarcía" />
+			<p> Fecha de nacimiento</p>
+			<input type="date" name="date_birth" />
+			<p> Teléfono</p>
+			<input type="text" name="tl_number" placeholder="+34 69 420 69 69" />
+			<p> Biografía</p>
+			<textarea name="bio" rows=5 placeholder="Cuéntanos algo sobre ti"></textarea>
+			<input type="submit" value="Create" />
+		</form>
+	</div>
+
 </body>
 </html>

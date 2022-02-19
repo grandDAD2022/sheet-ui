@@ -1,9 +1,26 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+	xmlns:th="http://www.thymeleaf.org">
 
-	<header style="font-family: Archivo; text-align: center; margin: 0; font-size: 32px;">
-    	<span>Sheet</span>
-    </header>
+<header>
+	<div class="content">
+		<a href="/"><h1 class="title">Sheet</h1></a>
+		<a th:if="${loggedIn}" href="/logout"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
+	</div>
+</header>
+
+<div class="login">
+	<form action="/login" method="post">
+		<p> Nombre de usuario</p>
+		<input type="text" name="username" placeholder="usuario" required />
+		
+		<p> Contraseña</p>
+		<input type="text" name="password" placeholder="correct horse battery staple" required />
+		
+		<button type="submit"><i class="fa-solid fa-arrow-right-to-bracket"></i></button>
+		
+		<p><a href="/signup">Si no tienes cuenta, ¡regístrate aquí!</a></p>
+	</form>
+</div>
 
 </html>

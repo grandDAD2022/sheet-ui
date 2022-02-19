@@ -1,40 +1,89 @@
 body {
-  background: white;
-  margin: 0;
-  padding: 0;
-  width: 100vw;
-  min-height: 100vh;
+	background: white;
+	margin: 0;
+	padding: 0;
+	font-family: Archivo, "Font Awesome 6 Free", sans-serif;
 }
 
-header {
-  width: 100%;
-  height: 64px;
-  box-shadow: 0 0 12px black;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* TODO: asegurar que funcione fuera de Firefox */
 #container {
-  width: 66vw;
-  margin: 32px auto;
-  display: grid;
-  gap: 8px;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: masonry;
-}
-#container > * {
-  border-radius: 8px;
+	width: 66vw;
+	margin: 92px auto 48px;
 }
 
-.placeholder {
-  background: gray;
-  height: 256px;
+a {
+	text-decoration: none;
+}
+
+/*
+	Headerbar
+*/
+header {
+	width: 100%;
+	height: 64px;
+	position: fixed;
+	top: 0;
+	background: #ffffff85;
+	backdrop-filter: blur(4px);
+	box-shadow: 0 0 12px black;
+}
+
+header>.content {
+	width: 66vw;
+	height: 100%;
+	margin: auto;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+header>.content .title {
+	font-size: 32px;
+	font-weight: bold;
+	color: black;
+}
+
+/*
+	Timeline
+*/
+/* TODO: asegurar que funcione fuera de Firefox */
+#container.timeline {
+	display: grid;
+	gap: 8px;
+	grid-template-columns: 1fr 1fr 1fr;
+	grid-template-rows: masonry;
+}
+
+#container.timeline>* {
+	border-radius: 8px;
+}
+
+#container.timeline>.card {
+	min-height: 256px;
+	box-shadow: 0 0 2px black;
+}
+
+/*
+	Signup
+*/
+#container>form {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	grid-gap: 8px;
+}
+
+#container>form>textarea {
+	resize: vertical;
+}
+
+.required::after {
+	content: '*';
+	font-size: 16px;
+	vertical-align: super;
+	color: red;
 }
 
 @media all and (max-width: 640px) {
-  #container {
-    grid-template-columns: 1fr;
-  }
+	#container {
+		grid-template-columns: 1fr;
+	}
 }
