@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,9 +21,13 @@ public class MainController {
 	private UserRepository userRepo;
 	
 	@GetMapping("/")
-	public String index(@CookieValue(value="_uuid", required=false) String cookie) {
+	public String index(@CookieValue(value="_uuid", required=false) String cookie, Model model) {
 		// Si no hay cookie, se devuelve la pantalla de inicio de sesión
-		return cookie != null ? "index" : "login";
+		if (cookie != null) {
+			model.addAttribute("loggedIn", true);
+			return "index";
+		} else
+			return "login";
 	}
 	
 	@GetMapping("/login")
@@ -37,6 +42,14 @@ public class MainController {
 		// TODO: Implementar Spring Security y OAuth
 		if (query.size() == 1)
 				response.addCookie(new Cookie("_uuid", String.valueOf(query.get(0).getId())));
+		return "redirect:/";
+	}
+	@GetMapping("/logout")
+	public String logout(HttpServletResponse response) {
+		// Se crea una cookie nula que reemplaza a la original si existía
+		Cookie cookie = new Cookie("_uuid", null);
+		cookie.setMaxAge(0);
+		response.addCookie(cookie);
 		return "redirect:/";
 	}
 	
