@@ -62,7 +62,7 @@ public class CommentController {
 	
 	@PutMapping("/{id}")
 	public Comment updateComment (@PathVariable long id, @RequestBody Comment newComment) {
-		comments.findById(id);
+		comments.findById(id).orElseThrow();
 		newComment.setId(id);
 		comments.save(newComment);
 		

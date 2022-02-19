@@ -67,7 +67,7 @@ public class UserController {
 	
 	@PutMapping("/{id}")
 	public User updateUser(@PathVariable long id, @RequestBody User newUser) {
-		users.findById(id);
+		users.findById(id).orElseThrow();
 		newUser.setId(id);
 		users.save(newUser);
 		

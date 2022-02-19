@@ -61,7 +61,7 @@ public class NotificationController {
 	
 	@PutMapping("/{id}")
 	public Notification updateNotification(@PathVariable long id, @RequestBody Notification newNotification) {
-		notifications.findById(id);
+		notifications.findById(id).orElseThrow();
 		newNotification.setId(id);
 		notifications.save(newNotification);
 		

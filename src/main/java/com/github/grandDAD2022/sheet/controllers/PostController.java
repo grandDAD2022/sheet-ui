@@ -61,7 +61,7 @@ public class PostController {
 	
 	@PutMapping("/{id}")
 	public Post updatepost(@PathVariable long id, @RequestBody Post newpost) {
-		posts.findById(id);
+		posts.findById(id).orElseThrow();
 		newpost.setId(id);
 		posts.save(newpost);
 		
