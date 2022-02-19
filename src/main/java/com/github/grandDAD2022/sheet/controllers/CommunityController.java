@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import javax.annotation.PostConstruct;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.github.grandDAD2022.sheet.db.Community;
 import com.github.grandDAD2022.sheet.db.CommunityRepository;
+import com.github.grandDAD2022.sheet.db.User;
+import com.github.grandDAD2022.sheet.db.UserRepository;
 
 @RestController
 @RequestMapping("/community")
@@ -24,10 +27,15 @@ public class CommunityController {
 	@Autowired
 	private CommunityRepository communities;
 	
+	@Autowired
+	private UserRepository users;
+	
 	@PostConstruct
 	public void init () {
 		if(communities.findAll().isEmpty()) {
-			communities.save(new Community("19-02-2022", "First community", ""));
+			User s1 = new User("Pepe", "Martín", "pepe@mail.es", "04-12-1992", "612345789", "Hi!", "pepe92", "pass");
+			users.save(s1);
+			communities.save(new Community(s1,"19-02-2022", "First community", ""));
 		}
 	}
 	
@@ -50,6 +58,7 @@ public class CommunityController {
 	@DeleteMapping("/{id}") 
 	public Community deleteCommunity (@PathVariable long id) {
 		Community c = communities.findById(id).orElseThrow();
+		Hibernate.initialize(c.getAdmin_user());
 		communities.deleteById(id);
 		return c;
 	}

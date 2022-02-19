@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Community {
@@ -16,13 +17,24 @@ public class Community {
 	private String comm_description;
 	private String user_in_community;
 	
+	@ManyToOne
+	private User admin_user;
+	
 	protected Community() {}
 	
-	public Community(String creation_date, String comm_description, String user_in_community) {
-		super();
+	public Community(User admin, String creation_date, String comm_description, String user_in_community) {
+		this.admin_user = admin;
 		this.creation_date = creation_date;
 		this.comm_description = comm_description;
 		this.user_in_community = user_in_community;
+	}
+
+	public User getAdmin_user() {
+		return admin_user;
+	}
+
+	public void setAdmin_user(User admin_user) {
+		this.admin_user = admin_user;
 	}
 
 	public long getId() {

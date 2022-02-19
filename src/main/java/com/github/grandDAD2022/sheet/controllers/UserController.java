@@ -27,7 +27,7 @@ public class UserController {
 	@PostConstruct
 	public void init() {
 		// TODO: no inicializar cuenta alguna
-		if (users.findAll().isEmpty())
+		if (users.findByUsername("RubBen_19").isEmpty())
 			users.save(new User(
 					"Rubén", "Vicente",
 					"ruben@email.com",
