@@ -1,7 +1,6 @@
 package com.github.grandDAD2022.sheet.controllers;
 
 import java.util.Collection;
-import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,13 +22,6 @@ public class PostController {
 
 	@Autowired
 	private PostRepository posts;
-	
-	@PostConstruct
-	public void init() {
-		// TODO: no inicializar cuenta alguna
-		if (posts.findAll().isEmpty())
-			posts.save(new Post(0, "16-02-2022", "primer comentario"));
-	}
 	
 	@GetMapping("/")
 	public Collection<Post> getposts() {

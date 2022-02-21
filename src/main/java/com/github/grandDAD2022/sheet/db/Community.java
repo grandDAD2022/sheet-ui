@@ -17,13 +17,13 @@ public class Community {
 	private String comm_description;
 	private String user_in_community;
 	
-	@ManyToOne
+	@ManyToOne()
 	private User admin_user;
 	
 	protected Community() {}
 	
-	public Community(User admin, String creation_date, String comm_description, String user_in_community) {
-		this.admin_user = admin;
+	public Community(String creation_date, String comm_description, String user_in_community) {
+		this.admin_user = null;
 		this.creation_date = creation_date;
 		this.comm_description = comm_description;
 		this.user_in_community = user_in_community;

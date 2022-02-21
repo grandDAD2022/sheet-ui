@@ -1,9 +1,14 @@
 package com.github.grandDAD2022.sheet.db;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 
 @Entity
@@ -22,11 +27,16 @@ public class User {
 	private String username;
 	private String password;
 	
+	@OneToMany(mappedBy = "id_user", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Post> posts;
+	
+	@OneToMany(mappedBy = "admin_user", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Community> communities_created;
+	
 	protected User () {}
 	
 	public User(String firstName, String surname, String e_mail, String date_birth, String tl_number,
 			String bio, String username, String password) {
-		super();
 		this.firstName = firstName;
 		this.surname = surname;
 		this.e_mail = e_mail;
@@ -35,6 +45,8 @@ public class User {
 		this.bio = bio;
 		this.username = username;
 		this.password = password;
+		this.posts = new ArrayList<Post> ();
+		this.communities_created = new ArrayList<Community> ();
 	}
 
 	public long getId() {
@@ -109,6 +121,42 @@ public class User {
 		this.password = password;
 	}
 
+	public List<Post> getPosts() {
+		return posts;
+	}
+
+	public void setPosts(List<Post> posts) {
+		this.posts = posts;
+	}
+/*
+	public void addPost (Post p) {
+		this.posts.add(p);
+		p.setPost(this);
+	}
+	
+	public void removePost (Post p) {
+		this.posts.remove(p);
+		p.setPost(null);
+	}
+	
+	public List<Community> getCommunities_created() {
+		return communities_created;
+	}
+
+	public void setCommunities_created(List<Community> communities_created) {
+		this.communities_created = communities_created;
+	}
+*/
+	public void addCommunity_created (Community c) {
+		this.communities_created.add(c);
+		c.setAdmin_user(this);
+	}
+	
+	public void removeCommunity (Community c) {
+		this.communities_created.remove(c);
+		c.setAdmin_user(null);
+	}
+	
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", firstName=" + firstName + ", surname=" + surname + ", e_mail=" + e_mail

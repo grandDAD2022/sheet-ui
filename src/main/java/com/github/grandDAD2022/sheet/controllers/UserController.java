@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.github.grandDAD2022.sheet.db.Community;
+import com.github.grandDAD2022.sheet.db.CommunityRepository;
+import com.github.grandDAD2022.sheet.db.Post;
+import com.github.grandDAD2022.sheet.db.PostRepository;
 import com.github.grandDAD2022.sheet.db.User;
 import com.github.grandDAD2022.sheet.db.UserRepository;
 
@@ -24,17 +28,28 @@ public class UserController {
 	@Autowired
 	private UserRepository users;
 	
+	@Autowired
+	private PostRepository posts;
+	
+	@Autowired
+	private CommunityRepository communities;
+	
 	@PostConstruct
 	public void init() {
-		// TODO: no inicializar cuenta alguna
-		if (users.findByUsername("RubBen_19").isEmpty())
-			users.save(new User(
+		if (users.findAll().isEmpty()) {
+			User u = new User(
 					"Rubén", "Vicente",
 					"ruben@email.com",
 					"09-02-2001",
 					"699999999", "Hola!",
 					"RubBen_19",
-					"password"));
+					"password");
+			User s1 = new User("Pepe", "Martín", "pepe@mail.es", "04-12-1992", "612345789", "Hi!", "pepe92", "pass");
+			Community c = new Community ("19-02-2022", "First community", "");
+			s1.addCommunity_created(c);
+			users.save(u);
+			users.save(s1);
+		}
 	}
 	
 	@GetMapping("/")

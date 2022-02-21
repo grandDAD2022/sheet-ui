@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Post {
@@ -11,14 +12,15 @@ public class Post {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	
-	private long id_user;
+	@ManyToOne()
+	private User id_user;
+	
 	private String date;
 	private String comment;
 	
 	protected Post() {}
 	
-	public Post(long id_user, String date, String comment) {
-		super();
+	public Post(User id_user, String date, String comment) {
 		this.id_user = id_user;
 		this.date = date;
 		this.comment = comment;
@@ -32,11 +34,11 @@ public class Post {
 		this.id = id;
 	}
 
-	public long getId_user() {
+	public User getId_user() {
 		return id_user;
 	}
 
-	public void setId_user(long id_user) {
+	public void setId_user(User id_user) {
 		this.id_user = id_user;
 	}
 
@@ -54,6 +56,10 @@ public class Post {
 
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+	
+	public void setPost(User user) {
+		this.id_user = user;
 	}
 
 	@Override

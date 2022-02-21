@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.github.grandDAD2022.sheet.db.Community;
 import com.github.grandDAD2022.sheet.db.CommunityRepository;
-import com.github.grandDAD2022.sheet.db.User;
-import com.github.grandDAD2022.sheet.db.UserRepository;
 
 @RestController
 @RequestMapping("/community")
@@ -26,18 +24,6 @@ public class CommunityController {
 
 	@Autowired
 	private CommunityRepository communities;
-	
-	@Autowired
-	private UserRepository users;
-	
-	@PostConstruct
-	public void init () {
-		if(communities.findAll().isEmpty()) {
-			User s1 = new User("Pepe", "Martín", "pepe@mail.es", "04-12-1992", "612345789", "Hi!", "pepe92", "pass");
-			users.save(s1);
-			communities.save(new Community(s1,"19-02-2022", "First community", ""));
-		}
-	}
 	
 	@GetMapping("/")
 	public Collection<Community> getCommunities() {
