@@ -3,40 +3,46 @@ package com.github.grandDAD2022.sheet.db;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
-@JsonIdentityInfo(
-		generator = ObjectIdGenerators.PropertyGenerator.class,
-		property = "id")
 public class Community {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "ID_COMUNIDAD", nullable = false, unique = true)
 	private long id;
-	
+	@Column(name = "FECHA_CREACION", nullable = false)
 	private String creation_date;
+	@Column(name = "DESCRIPCION_COMUNIDAD", nullable = true)
 	private String comm_description;
 	
 	@ManyToMany(mappedBy = "communities")
+	@JsonIgnore
 	private List<User> user_in_community = new ArrayList<User> ();
 	
-	//private User admin_user;
+	@ManyToOne
+	@JsonIgnore
+	private User admin_user;
 	
 	protected Community() {}
 	
 	public Community(String creation_date, String comm_description) {
-		//this.admin_user = null;
+		this.admin_user = null;
 		this.creation_date = creation_date;
 		this.comm_description = comm_description;
 	}
-/*
+	
 	public User getAdmin_user() {
 		return admin_user;
 	}
@@ -44,7 +50,7 @@ public class Community {
 	public void setAdmin_user(User admin_user) {
 		this.admin_user = admin_user;
 	}
-*/
+
 	public long getId() {
 		return id;
 	}

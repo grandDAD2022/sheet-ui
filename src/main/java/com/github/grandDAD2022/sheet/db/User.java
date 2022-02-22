@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,33 +13,55 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 
 @Entity
-@JsonIdentityInfo(
-		generator = ObjectIdGenerators.PropertyGenerator.class,
-		property = "id")
 public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "ID_USUARIO", nullable = false, unique = true)
 	private long id;
 	
+	@Column(name = "NOMBRE_PERSONAL", nullable = false)
 	private String firstName;
+	
+	@Column(name = "APELLIDO", nullable = false)
 	private String surname;
+	
+	@Column(name = "MAIL", nullable = false)
 	private String e_mail;
+	
+	@Column(name = "FECHA_NACIMIENTO", nullable = false)
 	private String date_birth;
+	
+	@Column(name = "N_TELEFONO", nullable = false)
 	private String tl_number;
+	
+	@Column(name = "BIOGRAFIA", nullable = true)
 	private String bio;
+	
+	@Column(name = "NOMBRE_USUARIO", nullable = false)
 	private String username;
+	
+	@Column(name = "CONTRASEÑA", nullable = false)
 	private String password;
+	
+	@OneToMany(mappedBy = "admin_user", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Community> com_admin = new ArrayList<Community> ();
 	
 	@ManyToMany
 	private List<Community> communities = new ArrayList<Community> ();
 	
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+	@JsonManagedReference
 	private List<Post> posts = new ArrayList<Post> ();
+	
+	@OneToMany(mappedBy = "author", cascade = CascadeType.REMOVE, orphanRemoval = true)
+	@JsonManagedReference
+	private List<Comment> comments = new ArrayList<Comment> ();
 	
 	protected User () {}
 	
@@ -150,6 +173,42 @@ public class User {
 	public void removePost (Post p) {
 		this.posts.remove(p);
 		p.setUser(null);
+	}
+	
+	public List<Community> getCom_admin() {
+		return com_admin;
+	}
+
+	public void setCom_admin(List<Community> com_admin) {
+		this.com_admin = com_admin;
+	}
+	
+	public void createCommunity (Community c) {
+		this.com_admin.add(c);
+		c.setAdmin_user(this);
+	}
+	
+	public void removeCommunity (Community c) {
+		this.com_admin.remove(c);
+		c.setAdmin_user(null);
+	}
+
+	public List<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
+	}
+
+	public void createNewComment (Comment c) {
+		this.comments.add(c);
+		c.setAuthor(this);
+	}
+	
+	public void removeComment (Comment c) {
+		this.comments.remove(c);
+		c.setAuthor(null);
 	}
 	
 	@Override

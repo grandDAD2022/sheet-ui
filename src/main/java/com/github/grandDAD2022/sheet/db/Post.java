@@ -4,29 +4,36 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 public class Post {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "ID_PUBLICACION", nullable = false, unique = true)
 	private long id;
 	
-	@ManyToOne
-	@JsonIgnore
-	private User user;
-	
+	@Column(name = "FECHA_PUBLICACION", nullable = false)
 	private String date;
+	
+	@Column(name = "TEXTO_PUBLICACION", nullable = false)
 	private String content;
 	
-	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+	@ManyToOne
+	@JoinColumn
+	@JsonBackReference
+	private User user;
+	
+	@OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private List<Comment> comment = new ArrayList<Comment> ();
 	
 	protected Post() {}

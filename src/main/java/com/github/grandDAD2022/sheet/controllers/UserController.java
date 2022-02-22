@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.grandDAD2022.sheet.db.Comment;
+import com.github.grandDAD2022.sheet.db.CommentRepository;
 import com.github.grandDAD2022.sheet.db.Community;
 import com.github.grandDAD2022.sheet.db.CommunityRepository;
 import com.github.grandDAD2022.sheet.db.Post;
+import com.github.grandDAD2022.sheet.db.PostRepository;
 import com.github.grandDAD2022.sheet.db.User;
 import com.github.grandDAD2022.sheet.db.UserRepository;
 
@@ -32,23 +34,45 @@ public class UserController {
 	private UserRepository users;
 	
 	@Autowired
-	private CommunityRepository communities;
+	private PostRepository posts;
+	
+	@Autowired
+	private CommentRepository comments;
 	
 	@PostConstruct
 	public void init() {
 		if (users.findAll().isEmpty()) {
+		//Creamos los usuarios que estarán en la base de datos
 			User s0 = new User("Rubén", "Vicente", "ruben@email.com", "09-02-2001", "699999999", "Hola!", "RubBen_19", "password");
 			User s1 = new User("Pepe", "Martín", "pepe@mail.es", "04-12-1992", "612345789", "Hi!", "pepe92", "pass");
-			Community c = new Community("19-02-2022", "First community");
-			communities.save(c);
-			s0.getCommunities().add(c);
-			s1.getCommunities().add(c);
-			Post p = new Post("21-02-2021", "Primer post");
-			p.addComment(new Comment("21-02-2022", "Primer Comentario :D", "Pepe", null));
-			p.addComment(new Comment("21-02-2022", "Segundo Comentario :D", "Timmy", null));			
-			s0.addPost(p);			
+		//Creamos un post
+			Post p0 = new Post("21-02-2021", "Primer post");
+			Post p1 = new Post("19-02-2022", "Segundo post");
+		//Creamos comentarios	
+			Comment c0 = new Comment("22-06-2023", "Primer comentario", null);
+			Comment c1 = new Comment("26-02-2022", "Holaaa!", null);
+			Comment c2 = new Comment("01-01-2023", "Feliz año!", null);
+		//Añadimos los posts a los usuarios
+			s0.addPost(p0);
+			s1.addPost(p1);
+		//Añadimos los comentarios a los usuarios
+			s0.createNewComment(c0);
+			s0.createNewComment(c2);
+			s1.createNewComment(c1);
+		//Guardamos los usuarios en el repositorio
 			users.save(s0);
 			users.save(s1);
+		//Añadimos los comentarios al post
+			p0.addComment(c0);
+			p0.addComment(c1);
+			p1.addComment(c2);
+		//Guardamos el post
+			posts.save(p0);
+			posts.save(p1);
+		//Guardamos los comentarios
+			comments.save(c0);
+			comments.save(c1);
+			comments.save(c2);
 		}
 	}
 	

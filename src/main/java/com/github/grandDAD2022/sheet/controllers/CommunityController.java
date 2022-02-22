@@ -2,6 +2,7 @@ package com.github.grandDAD2022.sheet.controllers;
 
 import java.util.Collection;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +21,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/community")
-@Tag(name = "Communityt", description = "API de comunidades")
+@Tag(name = "Community", description = "API de comunidades")
 public class CommunityController {
 
 	@Autowired

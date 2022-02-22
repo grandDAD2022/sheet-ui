@@ -1,11 +1,14 @@
 package com.github.grandDAD2022.sheet.db;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -13,23 +16,34 @@ public class Comment {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "ID_COMENTARIO", nullable = false, unique = true)
 	private long id;
 	
+	@Column(name = "FECHA_COMENTARIO", nullable = false)
 	private String comment_date;
+	
+	@Column(name = "TEXTO_COMENTARIO", nullable = false)
 	private String content;
-	private String author;
+	
+	@Column(name = "RESPUESTA", nullable = true)
 	private String answer;
 	
 	@ManyToOne
-	@JsonIgnore
+	@JoinColumn(name = "ID_POST")
+	@JsonBackReference
 	private Post post;
+	
+	@ManyToOne()
+	@JoinColumn(name="ID_AUTOR")
+	@JsonBackReference
+	private User author;
 	
 	protected Comment () {}
  	
-	public Comment(String comment_date, String content, String author, String answer) {
+	public Comment(String comment_date, String content, String answer) {
 		this.comment_date = comment_date;
 		this.content = content;
-		this.author = author;
+		this.author = null;
 		this.answer = answer;
 		this.post = null;
 	}
@@ -58,11 +72,11 @@ public class Comment {
 		this.content = content;
 	}
 
-	public String getAuthor() {
+	public User getAuthor() {
 		return author;
 	}
 
-	public void setAuthor(String author) {
+	public void setAuthor(User author) {
 		this.author = author;
 	}
 

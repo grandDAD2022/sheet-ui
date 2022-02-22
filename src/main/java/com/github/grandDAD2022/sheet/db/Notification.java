@@ -1,5 +1,6 @@
 package com.github.grandDAD2022.sheet.db;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,10 +11,16 @@ public class Notification {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "ID_NOTIFICACION", nullable = false, unique = true)
 	private long id;
 	
+	@Column(name = "TIPO_NOTIFICACION", nullable = false)
 	private String notify_type;
+	
+	@Column(name = "FECHA_NOTIFICACION", nullable = false)
 	private String notify_date;
+	
+	@Column(name = "TEXTO_NOTIFICACION", nullable = false)
 	private String notify_text;
 	
 	protected Notification () {}
