@@ -3,11 +3,13 @@ package com.github.grandDAD2022.sheet.db;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -34,6 +36,9 @@ public class User {
 	
 	@ManyToMany
 	private List<Community> communities = new ArrayList<Community> ();
+	
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Post> posts = new ArrayList<Post> ();
 	
 	protected User () {}
 	
@@ -129,6 +134,24 @@ public class User {
 		this.communities = communities;
 	}
 
+	public List<Post> getPosts() {
+		return posts;
+	}
+
+	public void setPosts(List<Post> posts) {
+		this.posts = posts;
+	}
+
+	public void addPost (Post p) {
+		this.posts.add(p);
+		p.setUser(this);
+	}
+	
+	public void removePost (Post p) {
+		this.posts.remove(p);
+		p.setUser(null);
+	}
+	
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", firstName=" + firstName + ", surname=" + surname + ", e_mail=" + e_mail

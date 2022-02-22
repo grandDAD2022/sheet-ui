@@ -8,7 +8,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Post {
@@ -16,7 +19,10 @@ public class Post {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	
-	private long id_user;
+	@ManyToOne
+	@JsonIgnore
+	private User user;
+	
 	private String date;
 	private String content;
 	
@@ -25,8 +31,8 @@ public class Post {
 	
 	protected Post() {}
 	
-	public Post(long id_user, String date, String content) {
-		this.id_user = id_user;
+	public Post(String date, String content) {
+		this.user = null;
 		this.date = date;
 		this.content = content;
 	}
@@ -39,12 +45,12 @@ public class Post {
 		this.id = id;
 	}
 
-	public long getId_user() {
-		return id_user;
+	public User getUser() {
+		return user;
 	}
 
-	public void setId_user(long id_user) {
-		this.id_user = id_user;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public String getDate() {
@@ -83,7 +89,7 @@ public class Post {
 	
 	@Override
 	public String toString() {
-		return "Post [id=" + id + ", id_user=" + id_user + ", date=" + date + ", comment=" + comment + "]";
+		return "Post [id=" + id + ", id_user=" + user + ", date=" + date + ", comment=" + comment + "]";
 	}
 	
 }

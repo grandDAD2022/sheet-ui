@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.github.grandDAD2022.sheet.db.Comment;
 import com.github.grandDAD2022.sheet.db.Community;
 import com.github.grandDAD2022.sheet.db.CommunityRepository;
+import com.github.grandDAD2022.sheet.db.Post;
 import com.github.grandDAD2022.sheet.db.User;
 import com.github.grandDAD2022.sheet.db.UserRepository;
 
@@ -41,6 +43,10 @@ public class UserController {
 			communities.save(c);
 			s0.getCommunities().add(c);
 			s1.getCommunities().add(c);
+			Post p = new Post("21-02-2021", "Primer post");
+			p.addComment(new Comment("21-02-2022", "Primer Comentario :D", "Pepe", null));
+			p.addComment(new Comment("21-02-2022", "Segundo Comentario :D", "Timmy", null));			
+			s0.addPost(p);			
 			users.save(s0);
 			users.save(s1);
 		}
