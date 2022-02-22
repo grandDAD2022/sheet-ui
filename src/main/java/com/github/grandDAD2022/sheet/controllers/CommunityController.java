@@ -2,9 +2,6 @@ package com.github.grandDAD2022.sheet.controllers;
 
 import java.util.Collection;
 
-import javax.annotation.PostConstruct;
-
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,7 +41,6 @@ public class CommunityController {
 	@DeleteMapping("/{id}") 
 	public Community deleteCommunity (@PathVariable long id) {
 		Community c = communities.findById(id).orElseThrow();
-		Hibernate.initialize(c.getAdmin_user());
 		communities.deleteById(id);
 		return c;
 	}

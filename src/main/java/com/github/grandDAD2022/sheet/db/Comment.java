@@ -4,6 +4,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Comment {
@@ -14,18 +17,21 @@ public class Comment {
 	
 	private String comment_date;
 	private String content;
-	private String post;
 	private String author;
 	private String answer;
 	
+	@ManyToOne
+	@JsonIgnore
+	private Post post;
+	
 	protected Comment () {}
  	
-	public Comment(String comment_date, String content, String String, String author, String answer) {
+	public Comment(String comment_date, String content, String author, String answer) {
 		this.comment_date = comment_date;
 		this.content = content;
-		this.post = String;
 		this.author = author;
 		this.answer = answer;
+		this.post = null;
 	}
 
 	public long getId() {
@@ -52,14 +58,6 @@ public class Comment {
 		this.content = content;
 	}
 
-	public String getString() {
-		return post;
-	}
-
-	public void setString(String String) {
-		this.post = String;
-	}
-
 	public String getAuthor() {
 		return author;
 	}
@@ -76,10 +74,17 @@ public class Comment {
 		this.answer = answer;
 	}
 
+	public Post getPost() {
+		return post;
+	}
+
+	public void setPost(Post post) {
+		this.post = post;
+	}
+
 	@Override
 	public String toString() {
-		return "Comment [id=" + id + ", comment_date=" + comment_date + ", content=" + content + ", post=" + post
-				+ ", author=" + author + ", answer=" + answer + "]";
+		return "Comment [id=" + id + ", comment_date=" + comment_date + ", content=" + content + ", author=" + author + ", answer=" + answer + "]";
 	}
 	
 	

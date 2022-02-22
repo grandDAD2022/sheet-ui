@@ -3,15 +3,20 @@ package com.github.grandDAD2022.sheet.db;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 
 @Entity
+@JsonIdentityInfo(
+		generator = ObjectIdGenerators.PropertyGenerator.class,
+		property = "id")
 public class User {
 
 	@Id
@@ -27,11 +32,8 @@ public class User {
 	private String username;
 	private String password;
 	
-	@OneToMany(mappedBy = "id_user", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Post> posts;
-	
-	@OneToMany(mappedBy = "admin_user", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Community> communities_created;
+	@ManyToMany
+	private List<Community> communities = new ArrayList<Community> ();
 	
 	protected User () {}
 	
@@ -45,8 +47,6 @@ public class User {
 		this.bio = bio;
 		this.username = username;
 		this.password = password;
-		this.posts = new ArrayList<Post> ();
-		this.communities_created = new ArrayList<Community> ();
 	}
 
 	public long getId() {
@@ -121,42 +121,14 @@ public class User {
 		this.password = password;
 	}
 
-	public List<Post> getPosts() {
-		return posts;
+	public List<Community> getCommunities() {
+		return communities;
 	}
 
-	public void setPosts(List<Post> posts) {
-		this.posts = posts;
-	}
-/*
-	public void addPost (Post p) {
-		this.posts.add(p);
-		p.setPost(this);
-	}
-	
-	public void removePost (Post p) {
-		this.posts.remove(p);
-		p.setPost(null);
-	}
-	
-	public List<Community> getCommunities_created() {
-		return communities_created;
+	public void setCommunities(List<Community> communities) {
+		this.communities = communities;
 	}
 
-	public void setCommunities_created(List<Community> communities_created) {
-		this.communities_created = communities_created;
-	}
-*/
-	public void addCommunity_created (Community c) {
-		this.communities_created.add(c);
-		c.setAdmin_user(this);
-	}
-	
-	public void removeCommunity (Community c) {
-		this.communities_created.remove(c);
-		c.setAdmin_user(null);
-	}
-	
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", firstName=" + firstName + ", surname=" + surname + ", e_mail=" + e_mail

@@ -17,8 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.github.grandDAD2022.sheet.db.Notification;
 import com.github.grandDAD2022.sheet.db.NotificationRepository;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/notifications")
+@Tag(name = "Notification", description = "API de notificaciones")
 public class NotificationController {
 
 	@Autowired
@@ -32,22 +36,26 @@ public class NotificationController {
 	}
 	
 	@GetMapping("/")
+	@Operation(summary = "Obtener una lista con todas las notificaciones")
 	public Collection<Notification> getNotifications() {
 		return notifications.findAll();
 	}
 	
 	@GetMapping("/{id}")
+	@Operation(summary = "Obtener una lista de notificaciones con un id")
 	public Notification getNotification(@PathVariable long id) {
 		return notifications.findById(id).orElseThrow();
 	}
 	
 	@PostMapping("/")
+	@Operation(summary = "Crear una notificación")
 	public Notification createNotification(@RequestBody Notification notification) {
 		notifications.save(notification);
 		return notification;
 	}
 	
 	@DeleteMapping("/{id}")
+	@Operation(summary = "Destruir una notificación")
 	public Notification deleteNotification(@PathVariable long id) {
 		Notification notification = notifications.findById(id).orElseThrow();
 		notifications.deleteById(id);
@@ -55,11 +63,13 @@ public class NotificationController {
 	}
 	
 	@DeleteMapping("/")
+	@Operation(summary = "Destruir todas las notificaciones")
 	public void deleteNotifications() {
 		notifications.deleteAll();
 	}
 	
 	@PutMapping("/{id}")
+	@Operation(summary = "Actualizar una publicación")
 	public Notification updateNotification(@PathVariable long id, @RequestBody Notification newNotification) {
 		notifications.findById(id).orElseThrow();
 		newNotification.setId(id);

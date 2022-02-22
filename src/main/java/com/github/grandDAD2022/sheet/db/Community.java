@@ -1,12 +1,20 @@
 package com.github.grandDAD2022.sheet.db;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
+@JsonIdentityInfo(
+		generator = ObjectIdGenerators.PropertyGenerator.class,
+		property = "id")
 public class Community {
 
 	@Id
@@ -15,20 +23,20 @@ public class Community {
 	
 	private String creation_date;
 	private String comm_description;
-	private String user_in_community;
 	
-	@ManyToOne()
-	private User admin_user;
+	@ManyToMany(mappedBy = "communities")
+	private List<User> user_in_community = new ArrayList<User> ();
+	
+	//private User admin_user;
 	
 	protected Community() {}
 	
-	public Community(String creation_date, String comm_description, String user_in_community) {
-		this.admin_user = null;
+	public Community(String creation_date, String comm_description) {
+		//this.admin_user = null;
 		this.creation_date = creation_date;
 		this.comm_description = comm_description;
-		this.user_in_community = user_in_community;
 	}
-
+/*
 	public User getAdmin_user() {
 		return admin_user;
 	}
@@ -36,7 +44,7 @@ public class Community {
 	public void setAdmin_user(User admin_user) {
 		this.admin_user = admin_user;
 	}
-
+*/
 	public long getId() {
 		return id;
 	}
@@ -61,11 +69,11 @@ public class Community {
 		this.comm_description = comm_description;
 	}
 
-	public String getUser_in_community() {
+	public List<User> getUser_in_community() {
 		return user_in_community;
 	}
 
-	public void setUser_in_community(String user_in_community) {
+	public void setUser_in_community(List<User> user_in_community) {
 		this.user_in_community = user_in_community;
 	}
 	
