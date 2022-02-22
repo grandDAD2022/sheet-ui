@@ -9,13 +9,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
 
 @Entity
 public class User {
@@ -49,10 +48,12 @@ public class User {
 	@Column(name = "CONTRASEÑA", nullable = false)
 	private String password;
 	
-	@OneToMany(mappedBy = "admin_user", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "admin_user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+	@JsonManagedReference
 	private List<Community> com_admin = new ArrayList<Community> ();
 	
-	@ManyToMany
+	@ManyToMany(mappedBy = "user_in_community")
+	@JsonManagedReference
 	private List<Community> communities = new ArrayList<Community> ();
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
@@ -157,6 +158,16 @@ public class User {
 		this.communities = communities;
 	}
 
+	public void joinCommunity (Community c) {
+		this.communities.add(c);
+		c.getUser_in_community().add(this);
+	}
+	
+	public void leaveCommunity (Community c) {
+		this.communities.remove(c);
+		c.getUser_in_community().remove(this);
+	}
+	
 	public List<Post> getPosts() {
 		return posts;
 	}
@@ -186,11 +197,13 @@ public class User {
 	public void createCommunity (Community c) {
 		this.com_admin.add(c);
 		c.setAdmin_user(this);
+		this.joinCommunity(c);
 	}
 	
 	public void removeCommunity (Community c) {
 		this.com_admin.remove(c);
 		c.setAdmin_user(null);
+		this.leaveCommunity(c);
 	}
 
 	public List<Comment> getComments() {
@@ -214,7 +227,9 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", firstName=" + firstName + ", surname=" + surname + ", e_mail=" + e_mail
-				+ ", date_birth=" + date_birth + ", tl_number=" + tl_number + ", bio=" + bio + "]";
+				+ ", date_birth=" + date_birth + ", tl_number=" + tl_number + ", bio=" + bio + ", username=" + username
+				+ ", password=" + password + ", com_admin=" + com_admin + ", communities=" + communities + ", posts="
+				+ posts + ", comments=" + comments + "]";
 	}
 	
 	

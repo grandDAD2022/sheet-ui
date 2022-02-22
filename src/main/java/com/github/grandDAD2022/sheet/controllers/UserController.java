@@ -39,40 +39,60 @@ public class UserController {
 	@Autowired
 	private CommentRepository comments;
 	
+	@Autowired
+	private CommunityRepository communities;
+	
 	@PostConstruct
 	public void init() {
 		if (users.findAll().isEmpty()) {
 		//Creamos los usuarios que estarán en la base de datos
 			User s0 = new User("Rubén", "Vicente", "ruben@email.com", "09-02-2001", "699999999", "Hola!", "RubBen_19", "password");
 			User s1 = new User("Pepe", "Martín", "pepe@mail.es", "04-12-1992", "612345789", "Hi!", "pepe92", "pass");
-		//Creamos un post
+		//Creamos los posts
 			Post p0 = new Post("21-02-2021", "Primer post");
 			Post p1 = new Post("19-02-2022", "Segundo post");
+			Post p2 = new Post("22-02-2022", "Primer post de la comunidad");
 		//Creamos comentarios	
 			Comment c0 = new Comment("22-06-2023", "Primer comentario", null);
 			Comment c1 = new Comment("26-02-2022", "Holaaa!", null);
 			Comment c2 = new Comment("01-01-2023", "Feliz año!", null);
+			Comment c3 = new Comment("22-02-2022", "Buen post", null);
+		//Creamos una comunidad
+			Community comm = new Community("22-03-2022", "Primera comunidad!");
+		//Añadimos la comunidad al usuario
+			s1.createCommunity(comm);
+		//Hacemos que el otro usuario se una a la comunidad
+			s0.joinCommunity(comm);
 		//Añadimos los posts a los usuarios
 			s0.addPost(p0);
+			s0.addPost(p2);
 			s1.addPost(p1);
 		//Añadimos los comentarios a los usuarios
 			s0.createNewComment(c0);
 			s0.createNewComment(c2);
 			s1.createNewComment(c1);
+			s1.createNewComment(c3);
 		//Guardamos los usuarios en el repositorio
 			users.save(s0);
 			users.save(s1);
+		//Añadimos los posts a la comunidad
+			comm.addPost(p2);
+		//Guardamos la comunidad
+			communities.save(comm);
 		//Añadimos los comentarios al post
 			p0.addComment(c0);
 			p0.addComment(c1);
 			p1.addComment(c2);
+			p2.addComment(c3);
 		//Guardamos el post
 			posts.save(p0);
 			posts.save(p1);
+			posts.save(p2);
 		//Guardamos los comentarios
 			comments.save(c0);
 			comments.save(c1);
 			comments.save(c2);
+			comments.save(c3);
 		}
 	}
 	

@@ -29,12 +29,17 @@ public class Post {
 	private String content;
 	
 	@ManyToOne
-	@JoinColumn
+	@JoinColumn(name = "ID_USUARIO")
 	@JsonBackReference
 	private User user;
 	
 	@OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private List<Comment> comment = new ArrayList<Comment> ();
+	
+	@ManyToOne
+	@JoinColumn(name = "ID_COMUNIDAD")
+	@JsonBackReference
+	private Community community;
 	
 	protected Post() {}
 	
@@ -94,9 +99,18 @@ public class Post {
 		c.setPost(null);
 	}
 	
+	public Community getCommunity() {
+		return community;
+	}
+
+	public void setCommunity(Community community) {
+		this.community = community;
+	}
+
 	@Override
 	public String toString() {
-		return "Post [id=" + id + ", id_user=" + user + ", date=" + date + ", comment=" + comment + "]";
+		return "Post [id=" + id + ", date=" + date + ", content=" + content + ", user=" + user + ", comment=" + comment
+				+ ", community=" + community + "]";
 	}
 	
 }
