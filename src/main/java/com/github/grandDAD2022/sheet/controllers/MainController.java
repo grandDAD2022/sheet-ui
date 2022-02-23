@@ -65,4 +65,9 @@ public class MainController {
 		response.addCookie(new Cookie("_uuid", String.valueOf(user.getId())));
 		return "redirect:/";
 	}
+	
+	// TODO: Eliminar función
+	public String random() {
+		return Integer.toString((int)(java.lang.Math.random() * 100)) + " comentarios";
+	}
 }
