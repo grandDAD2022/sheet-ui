@@ -52,3 +52,34 @@ así como seguir a usuarios que se unan, ver sus publicaciones y comentar en ell
 - Envío de correo
 - Escalado de imágenes
 - Compresión de vídeo
+
+## Páginas
+
+### Mural de publicaciones
+
+![Timeline](img/timeline.png)
+
+Esta es la página con la que el usuario será bienvenido cada vez que se conecte.
+Muestra sus últimas publicaciones así como las de de las cuentas a las que sigue.
+Esta página es privada y solo está disponible con una cookie de sesión.
+
+### Perfil de usuario
+
+![Perfil](img/profile.png)
+
+Para que cualquiera pueda descubrir y examinar las publicaciones de un usuario,
+sus perfiles están disponibles públicamente sin necesidad de iniciar sesión.
+
+### Inicio de sesión
+
+![Inicio de sesión](img/login.png)
+
+La primera vez que se abre Sheet en una sesión web, aparecerá este menú de inicio de sesión.
+Permite tanto insertar credenciales para una cuenta existente, como solicitar registrar una nueva.
+
+### Formulario de registro
+
+![Registro](img/signup.png)
+
+Si no se dispone de cuenta de usuario, basta con rellenar los datos del formulario de registro
+para ponerse en marcha.
