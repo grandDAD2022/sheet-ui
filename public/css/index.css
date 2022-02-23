@@ -29,6 +29,7 @@ header {
 	background: #ffffff85;
 	backdrop-filter: blur(16px);
 	box-shadow: 0 0 12px black;
+	z-index: 999;
 }
 
 header>.content {
@@ -57,19 +58,14 @@ header>.content>.userSettings {
 */
 /* TODO: asegurar que funcione fuera de Firefox */
 #container.timeline {
-	display: grid;
 	gap: 8px;
-	grid-template-columns: 1fr 1fr 1fr;
-	grid-template-rows: masonry;
 }
 
 #container.timeline>.card {
 	box-shadow: 0 0 2px black;
 	border-radius: 8px;
-}
-#container.timeline>.post.card {
-	display: grid;
-	grid-template-rows: auto 1fr auto;
+	margin: 0 0 8px;
+	width: calc(33.3333% - 8px);
 }
 #container.timeline>.post.card>* {
 	width: 100%;
@@ -109,7 +105,7 @@ header>.content>.userSettings {
 }
 
 @media all and (max-width: 640px) {
-	#container.timeline {
-		grid-template-columns: 1fr;
+	#container.timeline>.card {
+		width: 100%;
 	}
 }
