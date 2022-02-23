@@ -14,6 +14,10 @@ a {
 	text-decoration: none;
 }
 
+img.avatar {
+	border-radius: 100%;
+}
+
 /*
 	Headerbar
 */
@@ -23,7 +27,7 @@ header {
 	position: fixed;
 	top: 0;
 	background: #ffffff85;
-	backdrop-filter: blur(4px);
+	backdrop-filter: blur(16px);
 	box-shadow: 0 0 12px black;
 }
 
@@ -36,10 +40,16 @@ header>.content {
 	align-items: center;
 }
 
-header>.content .title {
+header>.content .title a {
 	font-size: 32px;
 	font-weight: bold;
 	color: black;
+}
+
+header>.content>.userSettings {
+	display: flex;
+	gap: 12px;
+	align-items: center;
 }
 
 /*
@@ -53,13 +63,29 @@ header>.content .title {
 	grid-template-rows: masonry;
 }
 
-#container.timeline>* {
+#container.timeline>.card {
+	box-shadow: 0 0 2px black;
 	border-radius: 8px;
 }
-
-#container.timeline>.card {
-	min-height: 256px;
-	box-shadow: 0 0 2px black;
+#container.timeline>.post.card {
+	display: grid;
+	grid-template-rows: auto 1fr auto;
+}
+#container.timeline>.post.card>* {
+	width: 100%;
+}
+#container.timeline>.post.card>.border {
+	padding: 16px;
+	display: flex;
+	gap: 8px;
+	align-items: center;
+}
+#container.timeline>.post.card>.comments.border>* {
+	transition: transform .7s;
+}
+#container.timeline>.post.card>.comments.border:hover>* {
+	transform: translate(8px);
+	transition: transform .7s;
 }
 
 /*
@@ -68,7 +94,7 @@ header>.content .title {
 #container>form {
 	display: grid;
 	grid-template-columns: auto 1fr;
-	grid-gap: 8px;
+	gap: 8px;
 }
 
 #container>form>textarea {
@@ -83,7 +109,7 @@ header>.content .title {
 }
 
 @media all and (max-width: 640px) {
-	#container {
+	#container.timeline {
 		grid-template-columns: 1fr;
 	}
 }

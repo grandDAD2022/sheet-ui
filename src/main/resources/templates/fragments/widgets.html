@@ -4,8 +4,11 @@
 
 <header>
 	<div class="content">
-		<a href="/"><h1 class="title">Sheet</h1></a>
-		<a th:if="${loggedIn}" href="/logout"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
+		<h1 class="title"><a href="/">Sheet</a></h1>
+		<div th:if="${loggedIn}" class="userSettings">
+			<img class="avatar" src="https://picsum.photos/32/32">
+			<a href="/logout"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
+		</div>
 	</div>
 </header>
 
@@ -21,6 +24,17 @@
 		
 		<p><a href="/signup">Si no tienes cuenta, ¡regístrate aquí!</a></p>
 	</form>
+</div>
+
+<div class="post card" th:fragment="post(body)">
+	<div class="title border">
+		<img class="avatar" src="https://picsum.photos/32/32">
+		<a>Author</a>
+	</div>
+	<div class="body" th:replace="${body}"></div>
+	<div class="comments border">
+		<a>69 comments</a><i class="fa-solid fa-arrow-right"></i>
+	</div>
 </div>
 
 </html>
