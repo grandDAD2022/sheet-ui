@@ -11,14 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.github.grandDAD2022.sheet.db.User;
 import com.github.grandDAD2022.sheet.db.UserRepository;
 
-@RequestMapping("/profile")
 @Controller
 public class ProfileController {
 	@Autowired
 	private UserRepository userRepo;
 	
 	// TODO: reconsiderar cómo enrutar
-	@GetMapping("/")
+	@GetMapping("/profile")
 	public String index(@CookieValue(value="_uuid", required=false) String cookie, Model model) {
 		// Si no hay cookie, se devuelve la pantalla de inicio de sesión
 		if (cookie != null) {
@@ -27,15 +26,15 @@ public class ProfileController {
 			model.addAttribute("user", user);
 			return "profile";
 		} else
-			return "redirect/";
+			return "redirect:/";
 	}
 	
-	@GetMapping("/{id}")
-	public String index(@PathVariable long id, @CookieValue(value="_uuid", required=false) String cookie, Model model) {
+	@GetMapping("/profile/{username}")
+	public String index(@PathVariable String username, @CookieValue(value="_uuid", required=false) String cookie, Model model) {
 		// Si no hay cookie, se devuelve la pantalla de inicio de sesión
 		
 		if (cookie != null) model.addAttribute("loggedIn", true);
-		User user = userRepo.getById(id);
+		User user = userRepo.findByUsername(username).get(0);
 		model.addAttribute("user", user);
 		return "profile";
 	}
