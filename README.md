@@ -22,7 +22,7 @@ así como seguir a usuarios que se unan, ver sus publicaciones y comentar en ell
 - Notificaciones
 - Comunidades
 
-##Diagrama de clases UML
+## Diagrama de clases UML
 
 ![Diagrama UML](img/diagramaUML.png)
 
