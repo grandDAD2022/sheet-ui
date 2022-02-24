@@ -49,19 +49,15 @@ public class User {
 	private String password;
 	
 	@OneToMany(mappedBy = "admin_user", cascade = CascadeType.REMOVE, orphanRemoval = true)
-	@JsonManagedReference
 	private List<Community> com_admin = new ArrayList<Community> ();
 	
 	@ManyToMany(mappedBy = "user_in_community")
-	@JsonManagedReference
 	private List<Community> communities = new ArrayList<Community> ();
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-	@JsonManagedReference
 	private List<Post> posts = new ArrayList<Post> ();
 	
 	@OneToMany(mappedBy = "author", cascade = CascadeType.REMOVE, orphanRemoval = true)
-	@JsonManagedReference
 	private List<Comment> comments = new ArrayList<Comment> ();
 	
 	protected User () {}

@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -32,16 +33,15 @@ public class Community {
 	private String comm_description;
 	
 	@ManyToMany()
-	@JsonBackReference
+	@JsonIgnore
 	private List<User> user_in_community = new ArrayList<User> ();
 	
 	@ManyToOne
 	@JoinColumn(name = "ID_ADMINISTRADOR", nullable = false)
-	@JsonBackReference
+	@JsonIgnore
 	private User admin_user;
 	
 	@OneToMany(mappedBy = "community", cascade = CascadeType.REMOVE, orphanRemoval = true)
-	@JsonManagedReference
 	private List<Post> posts = new ArrayList<Post> ();
 
 	protected Community() {}

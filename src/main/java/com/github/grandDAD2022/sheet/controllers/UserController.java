@@ -120,7 +120,7 @@ public class UserController {
 	public User deleteUser(@PathVariable long id) {
 		User user = users.findById(id).orElseThrow();
 		users.deleteById(id);
-		return user;
+		return null;
 	}
 	
 	@DeleteMapping("/")

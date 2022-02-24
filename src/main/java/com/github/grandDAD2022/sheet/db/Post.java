@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Post {
@@ -30,7 +31,7 @@ public class Post {
 	
 	@ManyToOne
 	@JoinColumn(name = "ID_USUARIO")
-	@JsonBackReference
+	@JsonIgnore
 	private User user;
 	
 	@OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, orphanRemoval = true)
@@ -38,7 +39,7 @@ public class Post {
 	
 	@ManyToOne
 	@JoinColumn(name = "ID_COMUNIDAD")
-	@JsonBackReference
+	@JsonIgnore
 	private Community community;
 	
 	protected Post() {}

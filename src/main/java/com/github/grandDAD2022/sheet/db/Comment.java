@@ -30,12 +30,12 @@ public class Comment {
 	
 	@ManyToOne
 	@JoinColumn(name = "ID_POST")
-	@JsonBackReference
+	@JsonIgnore
 	private Post post;
 	
 	@ManyToOne()
 	@JoinColumn(name="ID_AUTOR")
-	@JsonBackReference
+	@JsonIgnore
 	private User author;
 	
 	protected Comment () {}
