@@ -5,7 +5,8 @@
 <header>
 	<div class="content">
 		<h1 class="title"><a href="/">Sheet</a></h1>
-		<div th:if="${loggedIn}" class="userSettings">
+		<div th:if="${userId}" class="userSettings">
+			<p>[[${username}]]</p>
 			<a href="/profile/"><img class="avatar" src="https://picsum.photos/32/32"></a>
 			<a href="/logout"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
 		</div>

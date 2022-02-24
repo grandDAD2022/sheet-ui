@@ -47,6 +47,7 @@ public class Post {
 		this.user = null;
 		this.date = date;
 		this.content = content;
+		this.community = null;
 	}
 
 	public long getId() {

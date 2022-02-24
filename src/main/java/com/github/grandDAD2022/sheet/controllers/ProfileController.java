@@ -21,9 +21,10 @@ public class ProfileController {
 	public String index(@CookieValue(value="_uuid", required=false) String cookie, Model model) {
 		// Si no hay cookie, se devuelve la pantalla de inicio de sesión
 		if (cookie != null) {
-			model.addAttribute("loggedIn", true);
-			User user = userRepo.findAll().get(0);
-			model.addAttribute("user", user);
+			User user = userRepo.findById(Long.parseLong(cookie)).get();
+			model.addAttribute("userId", user.getId());
+			model.addAttribute("username", user.getUsername());
+			model.addAttribute("profileUser", user);
 			return "profile";
 		} else
 			return "redirect:/";
@@ -33,9 +34,13 @@ public class ProfileController {
 	public String index(@PathVariable String username, @CookieValue(value="_uuid", required=false) String cookie, Model model) {
 		// Si no hay cookie, se devuelve la pantalla de inicio de sesión
 		
-		if (cookie != null) model.addAttribute("loggedIn", true);
-		User user = userRepo.findByUsername(username).get(0);
-		model.addAttribute("user", user);
+		if (cookie != null) {
+			User user = userRepo.findById(Long.parseLong(cookie)).get();
+			model.addAttribute("userId", user.getId());
+			model.addAttribute("username", user.getUsername());
+		}
+		User profileUser = userRepo.findByUsername(username).get(0);
+		model.addAttribute("profileUser", profileUser);
 		return "profile";
 	}
 }

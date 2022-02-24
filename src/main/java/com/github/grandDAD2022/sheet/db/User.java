@@ -24,22 +24,22 @@ public class User {
 	@Column(name = "ID_USUARIO", nullable = false, unique = true)
 	private long id;
 	
-	@Column(name = "NOMBRE_PERSONAL", nullable = false)
+	@Column(name = "NOMBRE_PERSONAL")
 	private String firstName;
 	
-	@Column(name = "APELLIDO", nullable = false)
+	@Column(name = "APELLIDO")
 	private String surname;
 	
 	@Column(name = "MAIL", nullable = false)
 	private String e_mail;
 	
-	@Column(name = "FECHA_NACIMIENTO", nullable = false)
+	@Column(name = "FECHA_NACIMIENTO")
 	private String date_birth;
 	
-	@Column(name = "N_TELEFONO", nullable = false)
+	@Column(name = "N_TELEFONO")
 	private String tl_number;
 	
-	@Column(name = "BIOGRAFIA", nullable = true)
+	@Column(name = "BIOGRAFIA")
 	private String bio;
 	
 	@Column(name = "NOMBRE_USUARIO", nullable = false)

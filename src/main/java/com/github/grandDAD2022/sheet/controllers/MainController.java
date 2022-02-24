@@ -24,7 +24,9 @@ public class MainController {
 	public String index(@CookieValue(value="_uuid", required=false) String cookie, Model model) {
 		// Si no hay cookie, se devuelve la pantalla de inicio de sesión
 		if (cookie != null) {
-			model.addAttribute("loggedIn", true);
+			User user = userRepo.findById(Long.parseLong(cookie)).get();
+			model.addAttribute("userId", user.getId());
+			model.addAttribute("username", user.getUsername());
 			return "index";
 		} else
 			return "login";
