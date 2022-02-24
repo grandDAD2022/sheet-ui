@@ -22,6 +22,10 @@ así como seguir a usuarios que se unan, ver sus publicaciones y comentar en ell
 - Notificaciones
 - Comunidades
 
+##Diagrama de clases UML
+
+![Diagrama UML](img/diagramaUML.png)
+
 ## Modelo Entidad/Relación
 
 ![Esquema UML](img/modelo_er.png)
