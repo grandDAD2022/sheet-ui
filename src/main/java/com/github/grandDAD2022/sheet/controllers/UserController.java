@@ -119,6 +119,9 @@ public class UserController {
 	@Operation(summary = "Destruir un usuario por su id")
 	public User deleteUser(@PathVariable long id) {
 		User user = users.findById(id).orElseThrow();
+		for (int i = 0; i < user.getCommunities().size(); i++) {
+			user.leaveCommunity(user.getCommunities().get(i));
+		}
 		users.deleteById(id);
 		return null;
 	}
