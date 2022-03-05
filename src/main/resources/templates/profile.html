@@ -5,41 +5,14 @@
 <body>
 
 	<header th:replace="fragments/widgets :: header"></header>
-
+		
 	<div id="container">
 		<img class="avatar" src="https://picsum.photos/128/128">
 		<h2>[[ ${profileUser.username} ]]</h2>
 		<p th:if="${ profileUser.bio }" th:text="${ profileUser.bio }"></p>
+		<div class="timeline grid" th:include="fragments/widgets :: timeline" 
+		data-masonry='{ "itemSelector": ".card", "gutter": 8, "horizontalOrder": true}'></div>
 	</div>
-	
-	<div id="container" class="timeline grid" data-masonry='{ "itemSelector": ".card", "gutter": 8, "horizontalOrder": true}'>
-		<!-- th:each="card : ${cards}"> -->
-		<div class="post card"
-		th:include="fragments/widgets :: .post(~{ :: .body1})">
-			<img class="body1" src="https://picsum.photos/1280/720"></img>
-		</div>
-		<div class="post card"
-		th:include="fragments/widgets :: .post(~{ :: .body3})">
-			<img class="body3" src="https://picsum.photos/1080/1920"></img>
-		</div>
-		<div class="post card"
-		th:include="fragments/widgets :: .post(~{ :: .body2})">
-			<img class="body2" src="https://picsum.photos/1024/1024"></img>
-		</div>
-		<div class="post card"
-		th:include="fragments/widgets :: .post(~{ :: .body4})">
-			<img class="body4" src="https://picsum.photos/1000/500"></img>
-		</div>
-	</div>
-	
-	<script>
-		window.addEventListener("load", (e) => {
-		document.body.appendChild(Object.assign(document.createElement('script'), {
-			  type: 'text/javascript',
-			  src: 'https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js',
-			  onload: () => this.onScriptLoaded()
-		}))});
-	</script>
 
 </body>
 </html>

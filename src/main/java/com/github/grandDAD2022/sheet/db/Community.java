@@ -33,12 +33,13 @@ public class Community {
 	private String comm_description;
 	
 	@ManyToMany()
-	@JsonIgnore
+	@JsonBackReference
 	private List<User> user_in_community = new ArrayList<User> ();
 	
 	@ManyToOne
 	@JoinColumn(name = "ID_ADMINISTRADOR", nullable = false)
 	@JsonIgnore
+	@JsonBackReference
 	private User admin_user;
 	
 	@OneToMany(mappedBy = "community", cascade = CascadeType.REMOVE, orphanRemoval = true)

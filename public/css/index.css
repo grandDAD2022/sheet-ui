@@ -57,29 +57,29 @@ header>.content>.userSettings {
 	Timeline
 */
 /* TODO: asegurar que funcione fuera de Firefox */
-#container.timeline {
+#container>.timeline {
 	gap: 8px;
 }
 
-#container.timeline>.card {
+#container>.timeline>.card {
 	box-shadow: 0 0 2px black;
 	border-radius: 8px;
 	margin: 0 0 8px;
 	width: calc(33.3333% - 8px);
 }
-#container.timeline>.post.card>* {
+#container>.timeline>.post.card>* {
 	width: 100%;
 }
-#container.timeline>.post.card>.border {
+#container>.timeline>.post.card>.border {
 	padding: 16px;
 	display: flex;
 	gap: 8px;
 	align-items: center;
 }
-#container.timeline>.post.card>.comments.border>* {
+#container>.timeline>.post.card>.comments.border>* {
 	transition: transform .7s;
 }
-#container.timeline>.post.card>.comments.border:hover>* {
+#container>.timeline>.post.card>.comments.border:hover>* {
 	transform: translate(8px);
 	transition: transform .7s;
 }

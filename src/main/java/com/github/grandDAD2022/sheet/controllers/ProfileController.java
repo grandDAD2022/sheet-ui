@@ -16,31 +16,27 @@ public class ProfileController {
 	@Autowired
 	private UserRepository userRepo;
 	
-	// TODO: reconsiderar cómo enrutar
 	@GetMapping("/profile")
 	public String index(@CookieValue(value="_uuid", required=false) String cookie, Model model) {
-		// Si no hay cookie, se devuelve la pantalla de inicio de sesión
 		if (cookie != null) {
 			User user = userRepo.findById(Long.parseLong(cookie)).get();
-			model.addAttribute("userId", user.getId());
-			model.addAttribute("username", user.getUsername());
-			model.addAttribute("profileUser", user);
-			return "profile";
+			return "redirect:/@" + user.getUsername();
 		} else
 			return "redirect:/";
 	}
-	
-	@GetMapping("/profile/{username}")
+
+	@GetMapping("/@{username}")
 	public String index(@PathVariable String username, @CookieValue(value="_uuid", required=false) String cookie, Model model) {
-		// Si no hay cookie, se devuelve la pantalla de inicio de sesión
-		
 		if (cookie != null) {
 			User user = userRepo.findById(Long.parseLong(cookie)).get();
 			model.addAttribute("userId", user.getId());
 			model.addAttribute("username", user.getUsername());
 		}
+		
 		User profileUser = userRepo.findByUsername(username).get(0);
 		model.addAttribute("profileUser", profileUser);
+		model.addAttribute("posts", profileUser.getPosts());
+		
 		return "profile";
 	}
 }

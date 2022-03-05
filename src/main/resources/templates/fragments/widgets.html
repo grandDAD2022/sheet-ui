@@ -38,4 +38,27 @@
 	</div>
 </div>
 
+<!-- th:if="${posts}" th:each="post,iterStat : ${posts}" -->
+<div class="timeline" th:fragment="timeline" data-masonry='{ "itemSelector": ".card", "gutter": 8, "horizontalOrder": true}'>
+	<div class="post card" th:if="${posts}" th:each="post,iterStat : ${posts}">
+		<div class="title border">
+			<img class="avatar" src="https://picsum.photos/32/32">
+			<a>Tuyo</a>
+		</div>
+		<img class="body" src="https://picsum.photos/1280/720"></img><!-- th:replace="${body}"></div> -->
+		<div class="comments border">
+			<a th:text='${ post.getComment().size() + " comentarios" }'></a><i class="fa-solid fa-arrow-right"></i>
+		</div>
+	</div>
+	
+	<script>
+		window.addEventListener("load", (e) => {
+		document.body.appendChild(Object.assign(document.createElement('script'), {
+			  type: 'text/javascript',
+			  src: 'https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js',
+			  onload: () => this.onScriptLoaded()
+		}))});
+	</script>
+</div>
+
 </html>
