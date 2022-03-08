@@ -1,9 +1,11 @@
 package com.github.grandDAD2022.sheet.controllers;
 
+import java.security.SecureRandom;
 import java.util.Collection;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,9 +47,10 @@ public class UserController {
 	@PostConstruct
 	public void init() {
 		if (users.findAll().isEmpty()) {
+			
 		//Creamos los usuarios que estarán en la base de datos
 			User s0 = new User("Rubén", "Vicente", "ruben@email.com", "09-02-2001", "699999999", "Hola!", "RubBen_19", "password");
-			User s1 = new User("Pepe", "Martín", "pepe@mail.es", "04-12-1992", "612345789", "Hi!", "pepe92", "pass");
+			User s1 = new User("Pepe", "Martín", "pepe@mail.es", "04-12-1992", "612345789", "Hi!", "pepe92", "password");
 		//Creamos los posts
 			Post p0 = new Post("21-02-2021", "Primer post");
 			Post p1 = new Post("19-02-2022", "Segundo post");

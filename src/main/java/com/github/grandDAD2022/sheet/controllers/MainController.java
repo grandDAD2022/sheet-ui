@@ -1,6 +1,7 @@
 package com.github.grandDAD2022.sheet.controllers;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,38 +22,16 @@ public class MainController {
 	private UserRepository userRepo;
 	
 	@GetMapping("/")
-	public String index(@CookieValue(value="_uuid", required=false) String cookie, Model model) {
-		// Si no hay cookie, se devuelve la pantalla de inicio de sesión
-		if (cookie != null) {
-			User user = userRepo.findById(Long.parseLong(cookie)).get();
-			model.addAttribute("userId", user.getId());
-			model.addAttribute("username", user.getUsername());
-			return "index";
-		} else
-			return "login";
+	public String index(Model model, HttpServletRequest request) {
+		User user = userRepo.findByUsername(request.getUserPrincipal().getName()).get(0);
+		model.addAttribute("userId", user.getId());
+		model.addAttribute("username", user.getUsername());
+		return "index";
 	}
 	
 	@GetMapping("/login")
 	public String loginForm() {
 		return "login";
-	}
-	@PostMapping("/login")
-	public String login(String username, String password, HttpServletResponse response) {
-		// Busca el usuario
-		List<User> query = userRepo.findByUsername(username);
-		// Si existe, se añade una cookie
-		// TODO: Implementar Spring Security y OAuth
-		if (query.size() == 1)
-				response.addCookie(new Cookie("_uuid", String.valueOf(query.get(0).getId())));
-		return "redirect:/";
-	}
-	@GetMapping("/logout")
-	public String logout(HttpServletResponse response) {
-		// Se crea una cookie nula que reemplaza a la original si existía
-		Cookie cookie = new Cookie("_uuid", null);
-		cookie.setMaxAge(0);
-		response.addCookie(cookie);
-		return "redirect:/";
 	}
 	
 	@GetMapping("/signup")

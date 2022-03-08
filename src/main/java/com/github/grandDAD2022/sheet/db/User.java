@@ -1,5 +1,6 @@
 package com.github.grandDAD2022.sheet.db;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -74,7 +77,8 @@ public class User {
 		this.tl_number = tl_number;
 		this.bio = bio;
 		this.username = username;
-		this.password = password;
+		BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder(10, new SecureRandom());
+		this.password = bcrypt.encode(password);
 	}
 
 	public long getId() {
@@ -146,7 +150,8 @@ public class User {
 	}
 
 	public void setPassword(String password) {
-		this.password = password;
+		BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder(10, new SecureRandom());
+		this.password = bcrypt.encode(password);
 	}
 
 	public List<Community> getCommunities() {
