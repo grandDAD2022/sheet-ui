@@ -1,5 +1,6 @@
 package com.github.grandDAD2022.sheet.db;
 
+import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -28,6 +30,13 @@ public class Post {
 	
 	@Column(name = "TEXTO_PUBLICACION", nullable = false)
 	private String content;
+	
+	@Column(name = "IMAGEN", nullable = true)
+	private String image;
+	
+	@Lob
+	@JsonIgnore
+	private Blob imageFile;
 	
 	@ManyToOne
 	@JoinColumn(name = "ID_USUARIO")
@@ -49,6 +58,8 @@ public class Post {
 		this.date = date;
 		this.content = content;
 		this.community = null;
+		this.image = null;
+		this.imageFile = null;
 	}
 
 	public long getId() {
@@ -81,6 +92,22 @@ public class Post {
 
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+	public Blob getImageFile() {
+		return imageFile;
+	}
+
+	public void setImageFile(Blob imageFile) {
+		this.imageFile = imageFile;
 	}
 
 	public List<Comment> getComment() {

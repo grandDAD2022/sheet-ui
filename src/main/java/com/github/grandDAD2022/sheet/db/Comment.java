@@ -29,12 +29,12 @@ public class Comment {
 	private String answer;
 	
 	@ManyToOne
-	@JoinColumn(name = "ID_POST")
+	@JoinColumn(name = "ID_POST", nullable = false)
 	@JsonIgnore
 	private Post post;
 	
 	@ManyToOne()
-	@JoinColumn(name="ID_AUTOR")
+	@JoinColumn(name="ID_AUTOR", nullable = false)
 	@JsonIgnore
 	private User author;
 	
