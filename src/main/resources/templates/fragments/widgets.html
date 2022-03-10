@@ -6,12 +6,40 @@
 	<div class="content">
 		<h1 class="title"><a href="/">Sheet</a></h1>
 		<div th:if="${userId}" class="userSettings">
-			<p>[[${username}]]</p>
-			<a href="/profile/"><img class="avatar" src="https://picsum.photos/32/32"></a>
+			<p th:text="${username}"></p>
+			<a href="/profile/"><img class="avatar" src="https://picsum.photos/128/128"></a>
 			<a href="/logout"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
 		</div>
 	</div>
 </header>
+
+<div class="post card" th:fragment="post(body)">
+	<div class="title border">
+		<img class="avatar" src="https://picsum.photos/128/128">
+		<a th:text="${ post.getUser().getUsername() }"></a>
+	</div>
+	<div th:replace="${body}"></div>
+	<div class="comments border">
+		<a th:text='${ post.getComment().size() + " comentario" + (post.getComment().size() == 1 ? "" : "s") }'></a>
+		<i class="fa-solid fa-arrow-right"></i>
+	</div>
+</div>
+
+<div class="timeline" th:fragment="timeline"
+		data-masonry='{ "itemSelector": ".card", "gutter": 8, "horizontalOrder": true}'>
+	<div class="post card" th:if="${posts}" th:each="post,iterStat : ${posts}" th:include=":: post(~{::.body})">
+		<img class="body" src="https://picsum.photos/1280/720"></img>
+	</div>
+	
+	<script>
+		window.addEventListener("load", (e) => {
+		document.body.appendChild(Object.assign(document.createElement('script'), {
+			  type: 'text/javascript',
+			  src: 'https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js',
+			  onload: () => this.onScriptLoaded()
+		}))});
+	</script>
+</div>
 
 <div class="login">
 	<form action="/login" method="post">
@@ -25,40 +53,6 @@
 		
 		<p><a href="/signup">Si no tienes cuenta, ¡regístrate aquí!</a></p>
 	</form>
-</div>
-
-<div class="post card" th:fragment="post(body)">
-	<div class="title border">
-		<img class="avatar" src="https://picsum.photos/32/32">
-		<a>Tuyo</a>
-	</div>
-	<div class="body" th:replace="${body}"></div>
-	<div class="comments border">
-		<a th:text="${ @mainController.random() }"></a><i class="fa-solid fa-arrow-right"></i>
-	</div>
-</div>
-
-<!-- th:if="${posts}" th:each="post,iterStat : ${posts}" -->
-<div class="timeline" th:fragment="timeline" data-masonry='{ "itemSelector": ".card", "gutter": 8, "horizontalOrder": true}'>
-	<div class="post card" th:if="${posts}" th:each="post,iterStat : ${posts}">
-		<div class="title border">
-			<img class="avatar" src="https://picsum.photos/32/32">
-			<a>Tuyo</a>
-		</div>
-		<img class="body" src="https://picsum.photos/1280/720"></img><!-- th:replace="${body}"></div> -->
-		<div class="comments border">
-			<a th:text='${ post.getComment().size() + " comentarios" }'></a><i class="fa-solid fa-arrow-right"></i>
-		</div>
-	</div>
-	
-	<script>
-		window.addEventListener("load", (e) => {
-		document.body.appendChild(Object.assign(document.createElement('script'), {
-			  type: 'text/javascript',
-			  src: 'https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js',
-			  onload: () => this.onScriptLoaded()
-		}))});
-	</script>
 </div>
 
 </html>

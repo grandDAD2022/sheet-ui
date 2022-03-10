@@ -76,12 +76,25 @@ header>.content>.userSettings {
 	gap: 8px;
 	align-items: center;
 }
+#container>.timeline>.post.card>.title.border>.avatar,
+.userSettings>a>.avatar {
+	width: 32px;
+	height: 32px;
+}
 #container>.timeline>.post.card>.comments.border>* {
 	transition: transform .7s;
 }
 #container>.timeline>.post.card>.comments.border:hover>* {
 	transform: translate(8px);
 	transition: transform .7s;
+}
+
+/*
+	Profile
+*/
+#container>.avatar {
+	width: 128px;
+	height: 128px;
 }
 
 /*

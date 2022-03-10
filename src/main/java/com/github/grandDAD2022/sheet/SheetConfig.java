@@ -62,6 +62,7 @@ public class SheetConfig {
 				.antMatchers("/login").permitAll()
 				.antMatchers("/signup").permitAll()
 				.antMatchers("/css/*").permitAll()
+				.antMatchers("/js/*").permitAll()
 				.antMatchers("/@*").permitAll()
 				.antMatchers("/swagger-ui/*").permitAll()
 				.antMatchers("/v3/api-docs/**").permitAll()
