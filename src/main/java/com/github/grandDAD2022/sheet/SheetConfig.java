@@ -53,6 +53,9 @@ public class SheetConfig {
 		
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
+			// TODO: return 401 on REST API instead of 302
+			// TODO: disable redirect to old request, cancel instead
+			// TODO: enable CSRF
 			http.csrf().disable();
 			
 			http.authorizeRequests()
@@ -60,6 +63,8 @@ public class SheetConfig {
 				.antMatchers("/signup").permitAll()
 				.antMatchers("/css/*").permitAll()
 				.antMatchers("/@*").permitAll()
+				.antMatchers("/swagger-ui/*").permitAll()
+				.antMatchers("/v3/api-docs/**").permitAll()
 				.anyRequest().authenticated();
 			
 			http.formLogin()
