@@ -8,34 +8,40 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 
 @Entity
 public class Comment {
+	public interface Basic {}
+	public interface Autor {}
+	public interface InPost {}
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "ID_COMENTARIO", nullable = false, unique = true)
+	@JsonView(Basic.class)
 	private long id;
 	
 	@Column(name = "FECHA_COMENTARIO", nullable = false)
+	@JsonView(Basic.class)
 	private String comment_date;
 	
 	@Column(name = "TEXTO_COMENTARIO", nullable = false)
+	@JsonView(Basic.class)
 	private String content;
 	
 	@Column(name = "RESPUESTA", nullable = true)
+	@JsonView(Basic.class)
 	private String answer;
 	
 	@ManyToOne
 	@JoinColumn(name = "ID_POST", nullable = false)
-	@JsonIgnore
+	@JsonView(InPost.class)
 	private Post post;
 	
 	@ManyToOne()
 	@JoinColumn(name="ID_AUTOR", nullable = false)
-	@JsonIgnore
+	@JsonView(Autor.class)
 	private User author;
 	
 	protected Comment () {}

@@ -1,11 +1,9 @@
 package com.github.grandDAD2022.sheet.controllers;
 
-import java.security.SecureRandom;
 import java.util.Collection;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.github.grandDAD2022.sheet.db.Comment;
 import com.github.grandDAD2022.sheet.db.CommentRepository;
 import com.github.grandDAD2022.sheet.db.Community;
@@ -31,6 +30,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequestMapping("/users")
 @Tag(name = "User", description = "API de usuarios")
 public class UserController {
+	
+	interface UserDetails extends User.Basic, User.Communities, User.Comments, User.Posts, Community.Basic, Comment.Basic, Post.Basic {}
 
 	@Autowired
 	private UserRepository users;
@@ -99,12 +100,14 @@ public class UserController {
 		}
 	}
 	
+	@JsonView(UserDetails.class)
 	@GetMapping("/")
 	@Operation(summary = "Obtener lista de todos los usuarios")
 	public Collection<User> getUsers() {
 		return users.findAll();
 	}
 	
+	@JsonView(UserDetails.class)
 	@GetMapping("/{id}")
 	@Operation(summary = "Obtener lista de usuarios a partir de una id")
 	public User getUser(@PathVariable long id) {

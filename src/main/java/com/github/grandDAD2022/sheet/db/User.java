@@ -10,60 +10,75 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonView;
 
 @Entity
 public class User {
-
+	public interface Basic {}
+	public interface Posts {}
+	public interface Communities {}
+	public interface Comments {}
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "ID_USUARIO", nullable = false, unique = true)
+	@JsonView(Basic.class)
 	private long id;
 	
 	@Column(name = "NOMBRE_PERSONAL")
+	@JsonView(Basic.class)
 	private String firstName;
 	
 	@Column(name = "APELLIDO")
+	@JsonView(Basic.class)
 	private String surname;
 	
 	@Column(name = "MAIL", nullable = false)
+	@JsonView(Basic.class)
 	private String e_mail;
 	
 	@Column(name = "FECHA_NACIMIENTO")
+	@JsonView(Basic.class)
 	private String date_birth;
 	
 	@Column(name = "N_TELEFONO")
+	@JsonView(Basic.class)
 	private String tl_number;
 	
 	@Column(name = "BIOGRAFIA")
+	@JsonView(Basic.class)
 	private String bio;
 	
 	@Column(name = "NOMBRE_USUARIO", nullable = false)
+	@JsonView(Basic.class)
 	private String username;
 	
 	@Column(name = "CONTRASEÑA", nullable = false)
 	private String password;
 	
 	@OneToMany(mappedBy = "admin_user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+	@Column(name = "ADMINISTRADOR", nullable = true)
+	@JsonView(Communities.class)
 	private List<Community> com_admin = new ArrayList<Community> ();
 	
 	@ManyToMany(mappedBy = "user_in_community")
-	@JsonManagedReference
+	@Column(name = "COMUNIDADES", nullable = true)
+	@JsonView(Communities.class)
 	private List<Community> communities = new ArrayList<Community> ();
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-	@JsonManagedReference
+	@Column(name = "PUBLICACIONES", nullable = true)
+	@JsonView(Posts.class)
 	private List<Post> posts = new ArrayList<Post> ();
 	
 	@OneToMany(mappedBy = "author", cascade = CascadeType.REMOVE, orphanRemoval = true)
-	@JsonManagedReference
+	@Column(name = "COMENTARIOS", nullable = true)
+	@JsonView(Comments.class)
 	private List<Comment> comments = new ArrayList<Comment> ();
 	
 	protected User () {}

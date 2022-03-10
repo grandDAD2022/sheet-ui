@@ -2,7 +2,6 @@ package com.github.grandDAD2022.sheet.controllers;
 
 import java.util.Collection;
 
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,8 +12,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.github.grandDAD2022.sheet.db.Community;
 import com.github.grandDAD2022.sheet.db.CommunityRepository;
+import com.github.grandDAD2022.sheet.db.Post;
+import com.github.grandDAD2022.sheet.db.User;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,17 +26,21 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "Community", description = "API de comunidades")
 public class CommunityController {
 
+	interface CommunityDetails extends Community.Basic, Community.Posts, Community.Users, Post.Basic, User.Basic {}
+	
 	@Autowired
 	private CommunityRepository communities;
 	
 	@GetMapping("/")
 	@Operation(summary = "Obtener lista de comunidades")
+	@JsonView(CommunityDetails.class)
 	public Collection<Community> getCommunities() {
 		return communities.findAll();
 	}
 	
 	@GetMapping("/{id}")
 	@Operation(summary = "Obtener lista de comunidades a partir de una id")
+	@JsonView(CommunityDetails.class)
 	public Community getCommunity(@PathVariable long id) {
 		return communities.findById(id).orElseThrow();
 	}

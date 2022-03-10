@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.github.grandDAD2022.sheet.db.Comment;
 import com.github.grandDAD2022.sheet.db.Post;
 import com.github.grandDAD2022.sheet.db.PostRepository;
 
@@ -33,16 +35,18 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequestMapping("/posts")
 @Tag(name = "Post", description = "API de publicaciones")
 public class PostController {
-
+	interface PostDetails extends Post.Basic,Post.Comentarios, Comment.Basic {}
 	@Autowired
 	private PostRepository posts;
 	
+	@JsonView(PostDetails.class)
 	@GetMapping("/")
 	@Operation(summary = "Obtener lista de todas las publicaciones")
 	public Collection<Post> getposts() {
 		return posts.findAll();
 	}
 	
+	@JsonView(PostDetails.class)
 	@GetMapping("/{id}")
 	@Operation(summary = "Obtener lista de las publicaciones con un id")
 	public Post getpost(@PathVariable long id) {
