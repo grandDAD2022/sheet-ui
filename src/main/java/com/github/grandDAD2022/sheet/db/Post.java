@@ -16,27 +16,21 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonView;
 
 @Entity
 public class Post {
-	public interface Basic {}
-	public interface Comentarios {}
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "ID_PUBLICACION", nullable = false, unique = true)
-	@JsonView(Basic.class)
 	private long id;
 	
-	@JsonView(Basic.class)
 	@Column(name = "FECHA_PUBLICACION", nullable = false)
 	private String date;
 	
-	@JsonView(Basic.class)
 	@Column(name = "TEXTO_PUBLICACION", nullable = false)
 	private String content;
 	
-	@JsonView(Basic.class)
 	@Column(name = "IMAGEN", nullable = true)
 	private String image;
 	
@@ -45,16 +39,17 @@ public class Post {
 	private Blob imageFile;
 	
 	@ManyToOne
-	@JoinColumn(name = "ID_USUARIO")
+	@JoinColumn(name = "ID_USUARIO", nullable = false)
 	@JsonIgnore
 	private User user;
 	
 	@OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, orphanRemoval = true)
-	@JsonView(Comentarios.class)
+	@Column(name = "COMENTARIOS", nullable = true)
+	@JsonIgnore
 	private List<Comment> comment = new ArrayList<Comment> ();
 	
 	@ManyToOne
-	@JoinColumn(name = "ID_COMUNIDAD")
+	@JoinColumn(name = "ID_COMUNIDAD", nullable = true)
 	@JsonIgnore
 	private Community community;
 	

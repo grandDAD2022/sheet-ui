@@ -14,40 +14,35 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Community {
 	
-	public interface Basic {}
-	public interface Users {}
-	public interface Posts {}
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "ID_COMUNIDAD", nullable = false, unique = true)
-	@JsonView(Basic.class)
 	private long id;
 	
 	@Column(name = "FECHA_CREACION", nullable = false)
-	@JsonView(Basic.class)
 	private String creation_date;
 	
 	@Column(name = "DESCRIPCION_COMUNIDAD", nullable = true)
-	@JsonView(Basic.class)
 	private String comm_description;
 	
 	@ManyToMany()
-	@JsonView(Users.class)
+	@Column(name = "USUARIOS_EN_COMUNIDAD", nullable = false)
+	@JsonIgnore
 	private List<User> user_in_community = new ArrayList<User> ();
 	
 	@ManyToOne
 	@JoinColumn(name = "ID_ADMINISTRADOR", nullable = false)
-	@JsonView(Users.class)
+	@JsonIgnore
 	private User admin_user;
 	
 	@OneToMany(mappedBy = "community", cascade = CascadeType.REMOVE, orphanRemoval = true)
-	@JsonView(Posts.class)
+	@Column(name = "POSTS", nullable = true)
+	@JsonIgnore
 	private List<Post> posts = new ArrayList<Post> ();
 
 	protected Community() {}

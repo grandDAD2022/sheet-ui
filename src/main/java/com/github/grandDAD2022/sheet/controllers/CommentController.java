@@ -10,13 +10,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.github.grandDAD2022.sheet.db.Comment;
 import com.github.grandDAD2022.sheet.db.CommentRepository;
 import com.github.grandDAD2022.sheet.db.Post;
+import com.github.grandDAD2022.sheet.db.PostRepository;
 import com.github.grandDAD2022.sheet.db.User;
+import com.github.grandDAD2022.sheet.db.UserRepository;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,29 +27,37 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequestMapping("/comments")
 @Tag(name = "Comment", description = "API de comentarios")
 public class CommentController {
-	interface CommentDetails extends Comment.Basic, Comment.Autor, Comment.InPost
-	, Post.Basic, User.Basic {}
 	
 	@Autowired
 	private CommentRepository comments;
 	
-	@JsonView(CommentDetails.class)
+	@Autowired
+	private UserRepository users;
+	
+	@Autowired
+	private PostRepository posts;
+	
 	@GetMapping("/")
 	@Operation(summary = "Obtener lista de comentarios")
 	public Collection<Comment> getComments() {
 		return comments.findAll();
 	}
 	
-	@JsonView(CommentDetails.class)
 	@GetMapping("/{id}")
 	@Operation(summary = "Obtener lista de comentarios a partir de una id")
 	public Comment getComment(@PathVariable long id) {
 		return comments.findById(id).orElseThrow();
 	}
-	
+		
 	@PostMapping("/")
 	@Operation(summary = "Crear un comentario")
-	public Comment createComment  (@RequestBody Comment c) {
+	public Comment createComment  (@RequestBody Comment c, @RequestParam long idAuthor, @RequestParam long idPost) {
+		users.findById(idAuthor).orElseThrow();
+		posts.findById(idPost).orElseThrow();
+		User u = users.getById(idAuthor);
+		Post p = posts.getById(idPost);
+		u.createNewComment(c);
+		p.addComment(c);
 		comments.save(c);
 		return c;
 	}
@@ -66,12 +76,14 @@ public class CommentController {
 		comments.deleteAll();
 	}
 	
-	
 	@PutMapping("/{id}")
 	@Operation(summary = "Actualizar un comentario")
 	public Comment updateComment (@PathVariable long id, @RequestBody Comment newComment) {
 		comments.findById(id).orElseThrow();
+		Comment c = comments.getById(id);
 		newComment.setId(id);
+		newComment.setAuthor(c.getAuthor());
+		newComment.setPost(c.getPost());
 		comments.save(newComment);
 		
 		return newComment;
