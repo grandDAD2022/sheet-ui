@@ -26,6 +26,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.github.grandDAD2022.sheet.db.Comment;
 import com.github.grandDAD2022.sheet.db.Post;
 import com.github.grandDAD2022.sheet.db.PostRepository;
+import com.github.grandDAD2022.sheet.db.User;
+import com.github.grandDAD2022.sheet.db.UserRepository;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -37,6 +39,9 @@ public class PostController {
 	
 	@Autowired
 	private PostRepository posts;
+	
+	@Autowired
+	private UserRepository users;
 	
 	@GetMapping("/")
 	@Operation(summary = "Obtener lista de todas las publicaciones")
@@ -51,15 +56,26 @@ public class PostController {
 	}
 	
 	@GetMapping("/{id}/comments")
-	public Collection<Comment> getCommentPost (@PathVariable long id) {
+	@Operation(summary = "Obtener lista de comentarios de un post a partir de su id")
+	public Collection<Comment> getPostComments (@PathVariable long id) {
 		posts.findById(id).orElseThrow();
 		Post p = posts.getById(id);
 		return p.getComment();
 	}
 	
+	@GetMapping("/{id}/author")
+	@Operation(summary = "Obtener el autor a partir del id del post")
+	public User getAuthor (@PathVariable long id) {
+		posts.findById(id).orElseThrow();
+		return posts.getById(id).getUser();
+	}
+	
 	@PostMapping("/")
 	@Operation(summary = "Crear una publicación")
-	public Post createpost(@RequestBody Post post) {
+	public Post createpost(@RequestBody Post post, @RequestParam long idAuthor) {
+		users.findById(idAuthor).orElseThrow();
+		User u = users.getById(idAuthor);
+		post.setUser(u);
 		posts.save(post);
 		return post;
 	}
@@ -83,6 +99,7 @@ public class PostController {
 	public Post updatepost(@PathVariable long id, @RequestBody Post newpost) {
 		posts.findById(id).orElseThrow();
 		newpost.setId(id);
+		newpost.setUser(posts.getById(id).getUser());
 		posts.save(newpost);
 		
 		return newpost;

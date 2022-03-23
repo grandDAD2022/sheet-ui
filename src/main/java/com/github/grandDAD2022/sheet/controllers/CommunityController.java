@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.github.grandDAD2022.sheet.db.Community;
 import com.github.grandDAD2022.sheet.db.CommunityRepository;
+import com.github.grandDAD2022.sheet.db.Post;
 import com.github.grandDAD2022.sheet.db.User;
 import com.github.grandDAD2022.sheet.db.UserRepository;
 
@@ -42,6 +43,27 @@ public class CommunityController {
 	@Operation(summary = "Obtener lista de comunidades a partir de una id")
 	public Community getCommunity(@PathVariable long id) {
 		return communities.findById(id).orElseThrow();
+	}
+	
+	@GetMapping("/{id}/admin")
+	@Operation(summary = "Obtener el administrador de una comunidad a partir de su id")
+	public User getCommunityAdmin(@PathVariable long id) {
+		communities.findById(id).orElseThrow();
+		return communities.getById(id).getAdmin_user();
+	}
+	
+	@GetMapping("/{id}/users")
+	@Operation(summary = "Obtener lista de usuarios de una comunidad a partir de su id")
+	public Collection<User> getCommunityUsers(@PathVariable long id) {
+		communities.findById(id).orElseThrow();
+		return communities.getById(id).getUser_in_community();
+	}
+	
+	@GetMapping("/{id}/posts")
+	@Operation(summary = "Obtener lista de posts de una comunidad a partir de su id")
+	public Collection<Post> getCommunityPosts(@PathVariable long id) {
+		communities.findById(id).orElseThrow();
+		return communities.getById(id).getPosts();
 	}
 	
 	@PostMapping("/")

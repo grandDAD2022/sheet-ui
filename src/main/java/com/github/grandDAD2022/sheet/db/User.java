@@ -232,6 +232,20 @@ public class User {
 		c.setAuthor(null);
 	}
 	
+	public void updateCommunities (User u) {
+		for (Community c : communities) {
+			if(c.getAdmin_user().equals(this)) {
+				u.getCom_admin().add(c);
+				//c.setAdmin_user(u);
+			}
+			u.getCommunities().add(c);
+		}
+	}
+	
+	public void updateComments (User u) {
+		u.setComments(this.getComments());
+	}
+	
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", firstName=" + firstName + ", surname=" + surname + ", e_mail=" + e_mail

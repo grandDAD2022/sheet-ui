@@ -48,7 +48,21 @@ public class CommentController {
 	public Comment getComment(@PathVariable long id) {
 		return comments.findById(id).orElseThrow();
 	}
-		
+	
+	@GetMapping("/{id}/post")
+	@Operation(summary = "Obtener el post al que pertenece el comentario a partir del id")
+	public Post getCommentPost (@PathVariable long id) {
+		comments.findById(id).orElseThrow();
+		return comments.getById(id).getPost();
+	}
+	
+	@GetMapping("/{id}/author")
+	@Operation(summary = "Obtener el usuario al que pertenece el comentario a partir del id")
+	public User getCommentAuthor (@PathVariable long id) {
+		comments.findById(id).orElseThrow();
+		return comments.getById(id).getAuthor();
+	}
+	
 	@PostMapping("/")
 	@Operation(summary = "Crear un comentario")
 	public Comment createComment  (@RequestBody Comment c, @RequestParam long idAuthor, @RequestParam long idPost) {

@@ -109,6 +109,34 @@ public class UserController {
 		return users.findById(id).orElseThrow();
 	}
 	
+	@GetMapping("/{id}/communities")
+	@Operation(summary = "Obtener lista de las comunidades a las que pertenece un usuario a partir de su id")
+	public Collection<Community> getUserCommunities (@PathVariable long id) {
+		users.findById(id).orElseThrow();
+		return users.getById(id).getCommunities();
+	}
+	
+	@GetMapping("/{id}/admincommunities")
+	@Operation(summary = "Obtener lista de las comunidades que pertenecen a un usuario a partir de su id")
+	public Collection<Community> getAdminCommunities (@PathVariable long id) {
+		users.findById(id).orElseThrow();
+		return users.getById(id).getCom_admin();
+	}
+	
+	@GetMapping("/{id}/comments")
+	@Operation(summary = "Obtener la lista de comentarios de un usuario a partir de su id")
+	public Collection<Comment> getUserComments (@PathVariable long id){
+		users.findById(id).orElseThrow();
+		return users.getById(id).getComments();
+	}
+	
+	@GetMapping("/{id}/posts")
+	@Operation(summary = "Obtener la lista de publicaciones de un usuario a partir de su id")
+	public Collection<Post> getUserPosts (@PathVariable long id){
+		users.findById(id).orElseThrow();
+		return users.getById(id).getPosts();
+	}
+	
 	@PostMapping("/")
 	@Operation(summary = "Crear un usuario")
 	public User createUser(@RequestBody User user) {
@@ -137,7 +165,8 @@ public class UserController {
 	@Operation(summary = "Actualizar un usuario partiendo de su id")
 	public User updateUser(@PathVariable long id, @RequestBody User newUser) {
 		users.findById(id).orElseThrow();
-		newUser.setId(id);
+		User u = users.getById(id);
+		newUser.setId(u.getId());
 		users.save(newUser);
 		
 		return newUser;
