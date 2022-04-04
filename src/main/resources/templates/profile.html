@@ -22,7 +22,8 @@
 	<script>
 		document.addEventListener("DOMContentLoaded", (e) => {
 			let overlay = document.querySelector(".pfp>.overlay");
-			let image = overlay.parentElement.querySelector("img");
+			let largePfp = overlay.parentElement.querySelector("img");
+			let headerPfp = document.querySelector("header img.avatar");
 			overlay.addEventListener("click", (e) => {
 				var input = document.createElement('input');
 				input.type = 'file';
@@ -34,8 +35,8 @@
 						body: formData
 				  	}).then((res) => {
 				  		if (res.ok) {
-				  			let image = overlay.parentElement.querySelector("img");
-				  			image.src += '?';
+				  			largePfp.src += '?';
+				  			headerPfp.src += '?';
 				  		} else {
 				  			alert("¡La foto no pudo subirse!");
 				  		}
