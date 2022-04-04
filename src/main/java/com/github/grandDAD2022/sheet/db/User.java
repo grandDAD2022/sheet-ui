@@ -1,5 +1,6 @@
 package com.github.grandDAD2022.sheet.db;
 
+import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,12 +11,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
+import org.apache.batik.transcoder.TranscoderException;
+import org.apache.commons.io.FileUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.github.atomfrede.jadenticon.Jadenticon;
 
 @Entity
 public class User {
@@ -50,6 +55,10 @@ public class User {
 	@Column(name = "CONTRASEÑA", nullable = false)
 	private String password;
 	
+	@Lob
+	@JsonIgnore
+	private byte[] profileImage;
+	
 	@OneToMany(mappedBy = "admin_user", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	@Column(name = "ADMINISTRADOR", nullable = true)
 	@JsonIgnore
@@ -73,7 +82,7 @@ public class User {
 	protected User () {}
 	
 	public User(String firstName, String surname, String e_mail, String date_birth, String tl_number,
-			String bio, String username, String password) {
+			String bio, String username, String password) throws IOException, TranscoderException {
 		this.firstName = firstName;
 		this.surname = surname;
 		this.e_mail = e_mail;
@@ -83,6 +92,7 @@ public class User {
 		this.username = username;
 		BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder(10, new SecureRandom());
 		this.password = bcrypt.encode(password);
+		this.profileImage = FileUtils.readFileToByteArray(Jadenticon.from(username).png());
 	}
 
 	public long getId() {
@@ -151,6 +161,14 @@ public class User {
 
 	public String getPassword() {
 		return password;
+	}
+	
+	public byte[] getProfileImage() {
+		return profileImage;
+	}
+
+	public void setProfileImage(byte[] profileImage) {
+		this.profileImage = profileImage;
 	}
 
 	public void setPassword(String password) {

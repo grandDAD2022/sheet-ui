@@ -7,7 +7,7 @@
 		<h1 class="title"><a href="/">Sheet</a></h1>
 		<div th:if="${userId}" class="userSettings">
 			<p th:text="${username}"></p>
-			<a href="/profile/"><img class="avatar" src="https://picsum.photos/128/128"></a>
+			<a href="/profile/"><img class="avatar" th:src="${'/users/'+userId+'/pfp'}"></a>
 			<a href="/logout"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
 		</div>
 	</div>
@@ -15,12 +15,12 @@
 
 <div class="post card" th:fragment="post(body)">
 	<div class="title border">
-		<img class="avatar" src="https://picsum.photos/128/128">
+		<img class="avatar" th:src="${'/users/' + post.user.id + '/pfp'}">
 		<a th:text="${ post.getUser().getUsername() }"></a>
 	</div>
 	<div th:replace="${body}"></div>
 	<div class="comments border">
-		<a th:text='${ post.getComment().size() + " comentario" + (post.getComment().size() == 1 ? "" : "s") }'></a>
+		<a th:text='${ post.getComment().size() + " comentario" + (post.comment.size() == 1 ? "" : "s") }'></a>
 		<i class="fa-solid fa-arrow-right"></i>
 	</div>
 </div>

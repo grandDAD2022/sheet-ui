@@ -1,9 +1,15 @@
 package com.github.grandDAD2022.sheet.controllers;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Collection;
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,7 +17,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.http.codec.multipart.FilePart;
 
 import com.github.grandDAD2022.sheet.db.Comment;
 import com.github.grandDAD2022.sheet.db.CommentRepository;
@@ -43,7 +54,7 @@ public class UserController {
 	private CommunityRepository communities;
 	
 	@PostConstruct
-	public void init() {
+	public void init() throws Exception {
 		if (users.findAll().isEmpty()) {
 			
 		//Creamos los usuarios que estarán en la base de datos
@@ -109,6 +120,20 @@ public class UserController {
 		return users.findById(id).orElseThrow();
 	}
 	
+	@GetMapping(value = "/{id}/pfp", produces = MediaType.IMAGE_PNG_VALUE)
+	@Operation(summary = "Obtener foto de perfil de usuario")
+	public @ResponseBody byte[] getProfileImage(@PathVariable long id) {
+		return users.getById(id).getProfileImage();
+	}
+	
+	@PutMapping(value = "/{id}/pfp", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	@Operation(summary = "Actualizar foto de perfil de usuario")
+	public void updateProfileImage(@PathVariable long id, @RequestParam MultipartFile imageFile) throws IOException {
+		User user = users.findById(id).orElseThrow();
+		user.setProfileImage(imageFile.getBytes());
+		users.save(user);
+ 	}
+	
 	@GetMapping("/{id}/communities")
 	@Operation(summary = "Obtener lista de las comunidades a las que pertenece un usuario a partir de su id")
 	public Collection<Community> getUserCommunities (@PathVariable long id) {
@@ -166,9 +191,16 @@ public class UserController {
 	public User updateUser(@PathVariable long id, @RequestBody User newUser) {
 		users.findById(id).orElseThrow();
 		User u = users.getById(id);
-		newUser.setId(u.getId());
-		users.save(newUser);
-		
+		u.setFirstName(newUser.getFirstName());
+		u.setSurname(newUser.getSurname());
+		u.setE_mail(newUser.getE_mail());
+		u.setDate_birth(newUser.getDate_birth());
+		u.setTl_number(newUser.getTl_number());
+		u.setBio(newUser.getBio());
+		u.setUsername(newUser.getUsername());
+		if (newUser.getPassword() != null)
+			u.setPassword(newUser.getPassword());
+		users.save(u);
 		return newUser;
 	}
  }

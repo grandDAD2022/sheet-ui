@@ -7,7 +7,7 @@
 	<header th:replace="fragments/widgets :: header"></header>
 		
 	<div id="container">
-		<img class="avatar" src="https://picsum.photos/128/128">
+		<img class="avatar" th:src="${'/users/'+profileUser.id+'/pfp'}">
 		<h2>[[ ${profileUser.username} ]]</h2>
 		<p th:if="${ profileUser.bio }" th:text="${ profileUser.bio }"></p>
 		<div class="timeline grid" th:include="fragments/widgets :: timeline" 
