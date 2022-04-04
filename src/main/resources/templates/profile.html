@@ -7,12 +7,47 @@
 	<header th:replace="fragments/widgets :: header"></header>
 		
 	<div id="container">
-		<img class="avatar" th:src="${'/users/'+profileUser.id+'/pfp'}">
+		<div class="pfp">
+			<img class="avatar" th:src="${'/users/'+profileUser.id+'/pfp'}">
+			<div th:class="${ userId == profileUser.id } ? 'overlay' : 'hidden'">
+				<i class="fa-solid fa-camera-retro"></i>
+			</div>
+		</div> 
 		<h2>[[ ${profileUser.username} ]]</h2>
 		<p th:if="${ profileUser.bio }" th:text="${ profileUser.bio }"></p>
 		<div class="timeline grid" th:include="fragments/widgets :: timeline" 
 		data-masonry='{ "itemSelector": ".card", "gutter": 8, "horizontalOrder": true}'></div>
 	</div>
+	
+	<script>
+		document.addEventListener("DOMContentLoaded", (e) => {
+			let overlay = document.querySelector(".pfp>.overlay");
+			let image = overlay.parentElement.querySelector("img");
+			overlay.addEventListener("click", (e) => {
+				var input = document.createElement('input');
+				input.type = 'file';
+				input.onchange = (e) => {  
+					const formData = new FormData()
+					formData.append('imageFile', e.target.files[0]);
+					fetch('/users/[[ ${userId} ]]/pfp', {
+						method: 'PUT',
+						body: formData
+				  	}).then((res) => {
+				  		if (res.ok) {
+				  			let image = overlay.parentElement.querySelector("img");
+				  			image.src += '?';
+				  		} else {
+				  			alert("¡La foto no pudo subirse!");
+				  		}
+				  	}).catch(error => {
+				  		alert("¡No se pudo conectar al servidor adecuadamente!");
+				  	    console.error(error);
+				    });
+				};
+				input.click();
+			})
+		});
+	</script>
 
 </body>
 </html>

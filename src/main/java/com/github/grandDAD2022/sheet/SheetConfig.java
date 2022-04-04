@@ -64,6 +64,7 @@ public class SheetConfig {
 				.antMatchers("/css/*").permitAll()
 				.antMatchers("/js/*").permitAll()
 				.antMatchers("/@*").permitAll()
+				.antMatchers("/users/*/pfp").permitAll()
 				.antMatchers("/swagger-ui/*").permitAll()
 				.antMatchers("/v3/api-docs/**").permitAll()
 				.anyRequest().authenticated();

@@ -18,6 +18,10 @@ img.avatar {
 	border-radius: 100%;
 }
 
+.hidden {
+	display: none;
+}
+
 /*
 	Headerbar
 */
@@ -56,7 +60,6 @@ header>.content>.userSettings {
 /*
 	Timeline
 */
-/* TODO: asegurar que funcione fuera de Firefox */
 #container>.timeline {
 	gap: 8px;
 }
@@ -92,9 +95,30 @@ header>.content>.userSettings {
 /*
 	Profile
 */
-#container>.avatar {
+#container>.pfp, #container>.pfp>* {
 	width: 128px;
 	height: 128px;
+	border-radius: 100%;
+}
+#container>.pfp {
+	position: relative;
+}
+#container>.pfp>.overlay {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: absolute;
+	top: 0;
+	opacity: 0;
+	font-size: 48px;
+	color: white;
+	background: rgba(0,0,0,.6);
+	transition: opacity .2s;
+}
+#container>.pfp:hover>.overlay {
+	opacity: 1;
+	cursor: pointer;
+	transition: opacity .2s;
 }
 
 /*
