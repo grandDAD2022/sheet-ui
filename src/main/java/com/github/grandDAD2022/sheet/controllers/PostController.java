@@ -106,7 +106,7 @@ public class PostController {
 	}
 	
 	@PostMapping("/{id}/image")
-	public ResponseEntity<Object> uploadIamge(@PathVariable long id, @RequestParam MultipartFile imageFile) throws IOException {
+	public ResponseEntity<Object> uploadImage(@PathVariable long id, @RequestParam MultipartFile imageFile) throws IOException {
 		Post post = posts.findById(id).orElseThrow();
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
 		post.setImage(location.toString());
