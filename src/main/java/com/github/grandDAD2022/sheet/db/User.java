@@ -79,6 +79,11 @@ public class User {
 	@JsonIgnore
 	private List<Comment> comments = new ArrayList<Comment> ();
 	
+	@ManyToMany(mappedBy = "user_notification")
+	@Column(name = "NOTIFICACIONES", nullable = true)
+	@JsonIgnore
+	private List<Notification> notification = new ArrayList<Notification> ();
+	
 	protected User () {}
 	
 	public User(String firstName, String surname, String e_mail, String date_birth, String tl_number,
@@ -264,6 +269,14 @@ public class User {
 		u.setComments(this.getComments());
 	}
 	
+	public List<Notification> getNotification() {
+		return notification;
+	}
+
+	public void setNotification(List<Notification> notification) {
+		this.notification = notification;
+	}
+
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", firstName=" + firstName + ", surname=" + surname + ", e_mail=" + e_mail

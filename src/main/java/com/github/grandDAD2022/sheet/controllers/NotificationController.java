@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.github.grandDAD2022.sheet.db.Notification;
 import com.github.grandDAD2022.sheet.db.NotificationRepository;
+import com.github.grandDAD2022.sheet.db.User;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -45,6 +46,13 @@ public class NotificationController {
 	@Operation(summary = "Obtener una lista de notificaciones con un id")
 	public Notification getNotification(@PathVariable long id) {
 		return notifications.findById(id).orElseThrow();
+	}
+	
+	@GetMapping("/{id}/users")
+	@Operation(summary = "Obtener lista de usuarios que tienen una notificacion a partir de su id")
+	public Collection<User> getCommunityUsers(@PathVariable long id) {
+		notifications.findById(id).orElseThrow();
+		return notifications.getById(id).getUser_notification();
 	}
 	
 	@PostMapping("/")

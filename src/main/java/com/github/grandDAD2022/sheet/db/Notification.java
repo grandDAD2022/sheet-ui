@@ -1,10 +1,16 @@
 package com.github.grandDAD2022.sheet.db;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Notification {
@@ -22,6 +28,11 @@ public class Notification {
 	
 	@Column(name = "TEXTO_NOTIFICACION", nullable = false)
 	private String notify_text;
+	
+	@ManyToMany()
+	@Column(name = "NOTIFICACION_USUARIO", nullable = false)
+	@JsonIgnore
+	private List<User> user_notification = new ArrayList<User> ();
 	
 	protected Notification () {}
 
@@ -61,6 +72,19 @@ public class Notification {
 
 	public void setNotify_text(String notify_text) {
 		this.notify_text = notify_text;
+	}
+	
+	public List<User> getUser_notification() {
+		return user_notification;
+	}
+
+	public void setUser_notification(List<User> user_notification) {
+		this.user_notification = user_notification;
+	}
+
+	public void newNotify(User u) {
+		u.getNotification().add(this);
+		this.getUser_notification().add(u);
 	}
 
 	@Override

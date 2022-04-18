@@ -28,6 +28,8 @@ import com.github.grandDAD2022.sheet.db.Comment;
 import com.github.grandDAD2022.sheet.db.CommentRepository;
 import com.github.grandDAD2022.sheet.db.Community;
 import com.github.grandDAD2022.sheet.db.CommunityRepository;
+import com.github.grandDAD2022.sheet.db.Notification;
+import com.github.grandDAD2022.sheet.db.NotificationRepository;
 import com.github.grandDAD2022.sheet.db.Post;
 import com.github.grandDAD2022.sheet.db.PostRepository;
 import com.github.grandDAD2022.sheet.db.User;
@@ -53,6 +55,9 @@ public class UserController {
 	@Autowired
 	private CommunityRepository communities;
 	
+	@Autowired
+	private NotificationRepository notifications;
+	
 	@PostConstruct
 	public void init() throws Exception {
 		if (users.findAll().isEmpty()) {
@@ -71,6 +76,8 @@ public class UserController {
 			Comment c3 = new Comment("22-02-2022", "Buen post", null);
 		//Creamos una comunidad
 			Community comm = new Community("22-03-2022", "Primera comunidad!");
+		//Creo una notificacion
+			Notification n1 = new Notification("", "18/04/2022", "Bienvenido a Sheet!!");
 		//Añadimos la comunidad al usuario
 			s1.createCommunity(comm);
 		//Hacemos que el otro usuario se una a la comunidad
@@ -105,6 +112,11 @@ public class UserController {
 			comments.save(c1);
 			comments.save(c2);
 			comments.save(c3);
+		//Adjuntamos las notificaciones 
+			n1.newNotify(s1);
+			n1.newNotify(s0);
+		//Guardamos las notificaciones
+			notifications.save(n1);
 		}
 	}
 	
@@ -134,11 +146,18 @@ public class UserController {
 		users.save(user);
  	}
 	
-	@GetMapping("/{id}/communities")
-	@Operation(summary = "Obtener lista de las comunidades a las que pertenece un usuario a partir de su id")
-	public Collection<Community> getUserCommunities (@PathVariable long id) {
+	@GetMapping("/{id}/usersnotifications")
+	@Operation(summary = "Obtener lista de notificaciones de un usuario a partir de su id")
+	public Collection<Notification> getNotifyUsers(@PathVariable long id) {
 		users.findById(id).orElseThrow();
-		return users.getById(id).getCommunities();
+		return users.getById(id).getNotification();
+	}
+	
+	@GetMapping("/{id}/users")
+	@Operation(summary = "Obtener lista de usuarios de una comunidad a partir de su id")
+	public Collection<User> getCommunityUsers(@PathVariable long id) {
+		communities.findById(id).orElseThrow();
+		return communities.getById(id).getUser_in_community();
 	}
 	
 	@GetMapping("/{id}/admincommunities")
