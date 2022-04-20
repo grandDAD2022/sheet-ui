@@ -59,6 +59,8 @@ public class User {
 	@JsonIgnore
 	private byte[] profileImage;
 	
+	private long imageId;
+	
 	@OneToMany(mappedBy = "admin_user", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	@Column(name = "ADMINISTRADOR", nullable = true)
 	@JsonIgnore
@@ -97,6 +99,7 @@ public class User {
 		this.username = username;
 		BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder(10, new SecureRandom());
 		this.password = bcrypt.encode(password);
+		this.imageId = 2; //Puesto en 2 para probar
 		this.profileImage = FileUtils.readFileToByteArray(Jadenticon.from(username).png());
 	}
 
@@ -168,6 +171,14 @@ public class User {
 		return password;
 	}
 	
+	public long getImageId() {
+		return imageId;
+	}
+
+	public void setImageId(long imageId) {
+		this.imageId = imageId;
+	}
+
 	public byte[] getProfileImage() {
 		return profileImage;
 	}
