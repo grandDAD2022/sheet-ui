@@ -9,10 +9,12 @@
 	<div id="container">
 		<h2>¡Bienvenido!</h2>
 		<form action="/signup" method="post">
+			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
 			<p class="required"> Nombre de usuario</p>
-			<input type="text" name="username" placeholder="usuario" required />			
+			<input type="text" name="username" placeholder="usuario" required />
 			<p class="required"> Contraseña</p>
-			<input type="password" name="password" placeholder="correct horse battery staple" required /> 
+			<input type="password" name="password" placeholder="correct horse battery staple" required />
 			<p class="required"> Correo electrónico</p>
 			<input type="email" name="e_mail" placeholder="prueba@runbox.com" required />
 			<p> Nombre</p>
