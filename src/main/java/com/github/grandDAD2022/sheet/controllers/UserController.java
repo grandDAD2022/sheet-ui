@@ -1,19 +1,9 @@
 package com.github.grandDAD2022.sheet.controllers;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
-
 import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.web.reactive.function.client.WebClientAutoConfiguration;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,14 +14,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.http.codec.multipart.FilePart;
-
 import com.github.grandDAD2022.sheet.db.Comment;
 import com.github.grandDAD2022.sheet.db.CommentRepository;
 import com.github.grandDAD2022.sheet.db.Community;
@@ -45,8 +31,7 @@ import com.github.grandDAD2022.sheet.db.UserRepository;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import nonapi.io.github.classgraph.utils.Assert;
-import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/users")
@@ -142,25 +127,25 @@ public class UserController {
 		return users.findById(id).orElseThrow();
 	}
 	
-	@SuppressWarnings("rawtypes")
 	@GetMapping(value = "/{id}/pfp", produces = MediaType.IMAGE_PNG_VALUE)
 	@Operation(summary = "Obtener foto de perfil de usuario")
-	public @ResponseBody Flux<ResponseEntity> getProfileImage(@PathVariable long id) {
+	public @ResponseBody Mono<ResponseEntity<byte[]>> getProfileImage(@PathVariable long id) {
 		users.findById(id).orElseThrow();
 		WebClient client = WebClient.builder()
-				  .baseUrl("http://localhost:42069")
-				  .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE) 
-				  .build();
-		return client.get().uri("//" + users.getById(id).getImageId())
+				.codecs(c ->
+					c.defaultCodecs().maxInMemorySize(8 * 1024 * 1024))
+				.baseUrl("http://localhost:42069")
+				.build();
+		return client.get().uri("/" + users.getById(id).getImageId())
 				.retrieve()
-				.bodyToFlux(ResponseEntity.class);
+				.toEntity(byte[].class);
 	}
 	
 	@PutMapping(value = "/{id}/pfp", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	@Operation(summary = "Actualizar foto de perfil de usuario")
 	public void updateProfileImage(@PathVariable long id, @RequestParam MultipartFile imageFile) throws IOException {
 		User user = users.findById(id).orElseThrow();
-		user.setProfileImage(imageFile.getBytes());
+		user.uploadImage(imageFile.getBytes());
 		users.save(user);
  	}
 	

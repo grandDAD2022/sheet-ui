@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,13 +12,18 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import org.apache.batik.transcoder.TranscoderException;
 import org.apache.commons.io.FileUtils;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.MediaType;
+import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.atomfrede.jadenticon.Jadenticon;
@@ -55,11 +61,7 @@ public class User {
 	@Column(name = "CONTRASEÑA", nullable = false)
 	private String password;
 	
-	@Lob
-	@JsonIgnore
-	private byte[] profileImage;
-	
-	private long imageId;
+	private String imageId;
 	
 	@OneToMany(mappedBy = "admin_user", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	@Column(name = "ADMINISTRADOR", nullable = true)
@@ -99,8 +101,7 @@ public class User {
 		this.username = username;
 		BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder(10, new SecureRandom());
 		this.password = bcrypt.encode(password);
-		this.imageId = 2; //Puesto en 2 para probar
-		this.profileImage = FileUtils.readFileToByteArray(Jadenticon.from(username).png());
+		this.uploadImage(FileUtils.readFileToByteArray(Jadenticon.from(username).png()));
 	}
 
 	public long getId() {
@@ -171,22 +172,33 @@ public class User {
 		return password;
 	}
 	
-	public long getImageId() {
+	public String getImageId() {
 		return imageId;
 	}
 
-	public void setImageId(long imageId) {
+	public void setImageId(String imageId) {
 		this.imageId = imageId;
 	}
-
-	public byte[] getProfileImage() {
-		return profileImage;
+	
+	public void uploadImage(byte[] image) {
+		WebClient client = WebClient.builder()
+				.codecs(c ->
+					c.defaultCodecs().maxInMemorySize(8 * 1024 * 1024))
+				.baseUrl("http://localhost:42069")
+				.build();
+        MultipartBodyBuilder builder = new MultipartBodyBuilder();
+        builder.part("body", new ByteArrayResource(image))
+                .header("Content-Type", "Multipart/related; type=\"image/png\"")
+                .header("Content-Disposition", "form-data; name=mediaFile; filename=upload.png");
+        Map<String,String> res = client.post().uri("/")
+			.contentType(MediaType.MULTIPART_FORM_DATA)
+			.body(BodyInserters.fromMultipartData(builder.build()))
+			.retrieve()
+		    .bodyToMono(new ParameterizedTypeReference<Map<String,String>>(){})
+		    .block();
+		this.imageId = res.get("id");
 	}
-
-	public void setProfileImage(byte[] profileImage) {
-		this.profileImage = profileImage;
-	}
-
+	
 	public void setPassword(String password) {
 		BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder(10, new SecureRandom());
 		this.password = bcrypt.encode(password);
