@@ -2,10 +2,16 @@ package com.github.grandDAD2022.sheet.controllers;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Map;
+
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import com.github.grandDAD2022.sheet.db.Comment;
 import com.github.grandDAD2022.sheet.db.CommentRepository;
@@ -141,11 +148,34 @@ public class UserController {
 				.toEntity(byte[].class);
 	}
 	
+	/*
+	 * Método encargado de actualizar la imagen del User u (pasado por parámetros)
+	 * SI el usuario no tiene imagen tendrá como valor -1, así que lo sustituirá.
+	 */
+	public void uploadImage(User u, Resource r) {
+		WebClient client = WebClient.builder()
+				.codecs(c ->
+					c.defaultCodecs().maxInMemorySize(8 * 1024 * 1024))
+				.baseUrl("http://localhost:42069")
+				.build();
+        MultipartBodyBuilder builder = new MultipartBodyBuilder();
+        builder.part("body", r)
+                .header("Content-Type", "Multipart/related; type=\"image/png\"")
+                .header("Content-Disposition", "form-data; name=mediaFile; filename=upload.png");
+        Map<String,String> res = client.post().uri("/")
+			.contentType(MediaType.MULTIPART_FORM_DATA)
+			.body(BodyInserters.fromMultipartData(builder.build()))
+			.retrieve()
+		    .bodyToMono(new ParameterizedTypeReference<Map<String,String>>(){})
+		    .block();
+		u.setImageId(res.get("id"));
+	}
+	
 	@PutMapping(value = "/{id}/pfp", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	@Operation(summary = "Actualizar foto de perfil de usuario")
 	public void updateProfileImage(@PathVariable long id, @RequestParam MultipartFile imageFile) throws IOException {
 		User user = users.findById(id).orElseThrow();
-		user.uploadImage(imageFile.getBytes());
+		this.uploadImage(user, imageFile.getResource());
 		users.save(user);
  	}
 	

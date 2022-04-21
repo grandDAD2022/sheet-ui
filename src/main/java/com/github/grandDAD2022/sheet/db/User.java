@@ -101,7 +101,7 @@ public class User {
 		this.username = username;
 		BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder(10, new SecureRandom());
 		this.password = bcrypt.encode(password);
-		this.uploadImage(FileUtils.readFileToByteArray(Jadenticon.from(username).png()));
+		this.imageId = "-1"; //Valor por defecto para usuarios sin imagen
 	}
 
 	public long getId() {
@@ -178,25 +178,6 @@ public class User {
 
 	public void setImageId(String imageId) {
 		this.imageId = imageId;
-	}
-	
-	public void uploadImage(byte[] image) {
-		WebClient client = WebClient.builder()
-				.codecs(c ->
-					c.defaultCodecs().maxInMemorySize(8 * 1024 * 1024))
-				.baseUrl("http://localhost:42069")
-				.build();
-        MultipartBodyBuilder builder = new MultipartBodyBuilder();
-        builder.part("body", new ByteArrayResource(image))
-                .header("Content-Type", "Multipart/related; type=\"image/png\"")
-                .header("Content-Disposition", "form-data; name=mediaFile; filename=upload.png");
-        Map<String,String> res = client.post().uri("/")
-			.contentType(MediaType.MULTIPART_FORM_DATA)
-			.body(BodyInserters.fromMultipartData(builder.build()))
-			.retrieve()
-		    .bodyToMono(new ParameterizedTypeReference<Map<String,String>>(){})
-		    .block();
-		this.imageId = res.get("id");
 	}
 	
 	public void setPassword(String password) {
