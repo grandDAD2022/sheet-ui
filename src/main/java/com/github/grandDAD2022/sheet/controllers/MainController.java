@@ -1,14 +1,20 @@
 package com.github.grandDAD2022.sheet.controllers;
 
+import java.io.IOException;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.batik.transcoder.TranscoderException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import com.github.atomfrede.jadenticon.Jadenticon;
 import com.github.grandDAD2022.sheet.db.User;
 import com.github.grandDAD2022.sheet.db.UserRepository;
 
@@ -17,6 +23,9 @@ public class MainController {
 	
 	@Autowired
 	private UserRepository userRepo;
+	
+	@Autowired
+	private ImageUploader image;
 	
 	@GetMapping("/")
 	public String index(Model model, HttpServletRequest request) {
@@ -36,9 +45,10 @@ public class MainController {
 		return "signup";
 	}
 	@PostMapping("/signup")
-	public String signup(User user, HttpServletResponse response) {
+	public String signup(User user, HttpServletResponse response) throws IOException, TranscoderException {
 		// Registra el usuario
 		userRepo.save(user);
+		image.upload(user, new FileSystemResource(Jadenticon.from(user.getUsername()).png()));
 		// y crea una cookie
 		response.addCookie(new Cookie("_uuid", String.valueOf(user.getId())));
 		return "redirect:/";
