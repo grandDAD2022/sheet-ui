@@ -1,5 +1,7 @@
 package com.github.grandDAD2022.sheet.db;
 
+import java.util.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -96,10 +98,27 @@ public class Comment {
 	}
 
 	@Override
+	public int hashCode() {
+		return Objects.hash(answer, author, comment_date, content, id, post);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Comment other = (Comment) obj;
+		return Objects.equals(answer, other.answer) && Objects.equals(author, other.author)
+				&& Objects.equals(comment_date, other.comment_date) && Objects.equals(content, other.content)
+				&& id == other.id && Objects.equals(post, other.post);
+	}
+
+	@Override
 	public String toString() {
 		return "Comment [id=" + id + ", comment_date=" + comment_date + ", content=" + content + ", answer=" + answer
 				+ ", post=" + post + ", author=" + author + "]";
 	}
-	
-	
 }

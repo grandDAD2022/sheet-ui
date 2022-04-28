@@ -2,6 +2,7 @@ package com.github.grandDAD2022.sheet.db;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -110,10 +111,30 @@ public class Community {
 		this.posts.remove(p);
 		p.setCommunity(null);
 	}
-	
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(admin_user, comm_description, creation_date, id, posts, user_in_community);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Community other = (Community) obj;
+		return Objects.equals(admin_user, other.admin_user) && Objects.equals(comm_description, other.comm_description)
+				&& Objects.equals(creation_date, other.creation_date) && id == other.id
+				&& Objects.equals(posts, other.posts) && Objects.equals(user_in_community, other.user_in_community);
+	}
+
 	@Override
 	public String toString() {
 		return "Community [id=" + id + ", creation_date=" + creation_date + ", comm_description=" + comm_description
 				+ ", user_in_community=" + user_in_community + ", admin_user=" + admin_user + ", posts=" + posts + "]";
 	}
+
 }

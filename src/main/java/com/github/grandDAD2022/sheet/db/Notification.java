@@ -2,6 +2,7 @@ package com.github.grandDAD2022.sheet.db;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -88,10 +89,28 @@ public class Notification {
 	}
 
 	@Override
+	public int hashCode() {
+		return Objects.hash(id, notify_date, notify_text, notify_type, user_notification);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Notification other = (Notification) obj;
+		return id == other.id && Objects.equals(notify_date, other.notify_date)
+				&& Objects.equals(notify_text, other.notify_text) && Objects.equals(notify_type, other.notify_type)
+				&& Objects.equals(user_notification, other.user_notification);
+	}
+
+	@Override
 	public String toString() {
 		return "Notification [id=" + id + ", notify_type=" + notify_type + ", notify_date=" + notify_date
-				+ ", notify_text=" + notify_text + "]";
+				+ ", notify_text=" + notify_text + ", user_notification=" + user_notification + "]";
 	}
-	
-	
+
 }

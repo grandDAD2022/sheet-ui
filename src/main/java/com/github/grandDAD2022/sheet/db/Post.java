@@ -3,6 +3,7 @@ package com.github.grandDAD2022.sheet.db;
 import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -139,9 +140,30 @@ public class Post {
 	}
 
 	@Override
-	public String toString() {
-		return "Post [id=" + id + ", date=" + date + ", content=" + content + ", user=" + user + ", comment=" + comment
-				+ ", community=" + community + "]";
+	public int hashCode() {
+		return Objects.hash(comment, community, content, date, id, image, imageFile, user);
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Post other = (Post) obj;
+		return Objects.equals(comment, other.comment) && Objects.equals(community, other.community)
+				&& Objects.equals(content, other.content) && Objects.equals(date, other.date) && id == other.id
+				&& Objects.equals(image, other.image) && Objects.equals(imageFile, other.imageFile)
+				&& Objects.equals(user, other.user);
+	}
+
+	@Override
+	public String toString() {
+		return "Post [id=" + id + ", date=" + date + ", content=" + content + ", image=" + image + ", imageFile="
+				+ imageFile + ", user=" + user + ", comment=" + comment + ", community=" + community + "]";
+	}
+
 	
 }

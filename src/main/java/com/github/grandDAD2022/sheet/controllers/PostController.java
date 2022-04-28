@@ -7,6 +7,8 @@ import java.util.Collection;
 
 import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -72,6 +74,7 @@ public class PostController {
 	
 	@PostMapping("/")
 	@Operation(summary = "Crear una publicación")
+	@CacheEvict
 	public Post createpost(@RequestBody Post post, @RequestParam long idAuthor) {
 		users.findById(idAuthor).orElseThrow();
 		User u = users.getById(idAuthor);
@@ -96,6 +99,7 @@ public class PostController {
 	
 	@PutMapping("/{id}")
 	@Operation(summary = "Actualizar una publicación")
+	@CachePut
 	public Post updatepost(@PathVariable long id, @RequestBody Post newpost) {
 		posts.findById(id).orElseThrow();
 		newpost.setId(id);

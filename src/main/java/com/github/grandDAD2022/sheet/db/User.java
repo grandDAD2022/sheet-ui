@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,17 +16,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import org.apache.batik.transcoder.TranscoderException;
-import org.apache.commons.io.FileUtils;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.http.MediaType;
-import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.github.atomfrede.jadenticon.Jadenticon;
 
 @Entity
 public class User {
@@ -282,11 +274,36 @@ public class User {
 	}
 
 	@Override
+	public int hashCode() {
+		return Objects.hash(bio, com_admin, comments, communities, date_birth, e_mail, firstName, id, imageId,
+				notification, password, posts, surname, tl_number, username);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		return Objects.equals(bio, other.bio) && Objects.equals(com_admin, other.com_admin)
+				&& Objects.equals(comments, other.comments) && Objects.equals(communities, other.communities)
+				&& Objects.equals(date_birth, other.date_birth) && Objects.equals(e_mail, other.e_mail)
+				&& Objects.equals(firstName, other.firstName) && id == other.id
+				&& Objects.equals(imageId, other.imageId) && Objects.equals(notification, other.notification)
+				&& Objects.equals(password, other.password) && Objects.equals(posts, other.posts)
+				&& Objects.equals(surname, other.surname) && Objects.equals(tl_number, other.tl_number)
+				&& Objects.equals(username, other.username);
+	}
+
+	@Override
 	public String toString() {
 		return "User [id=" + id + ", firstName=" + firstName + ", surname=" + surname + ", e_mail=" + e_mail
 				+ ", date_birth=" + date_birth + ", tl_number=" + tl_number + ", bio=" + bio + ", username=" + username
-				+ ", password=" + password + ", com_admin=" + com_admin + ", communities=" + communities + ", posts="
-				+ posts + ", comments=" + comments + "]";
+				+ ", password=" + password + ", imageId=" + imageId + ", com_admin=" + com_admin + ", communities="
+				+ communities + ", posts=" + posts + ", comments=" + comments + ", notification=" + notification + "]";
 	}
 	
 	
