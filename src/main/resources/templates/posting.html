@@ -1,0 +1,20 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/structure :: head" />
+<body>
+
+	<header th:replace="fragments/widgets :: header"></header>
+
+	<div id="container">
+		<h2>¡Comparte!</h2>
+		<form action="/posting" method="post">
+			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+			<p class="required"> ¿Que quieres decir hoy?</p>
+			<textarea name="content" rows=3 placeholder="¿Que tal tu dia?" required></textarea>
+			<input type="submit" value="¡Publica!" />
+		</form>
+	</div>
+
+</body>
+</html>

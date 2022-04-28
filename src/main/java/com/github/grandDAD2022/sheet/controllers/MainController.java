@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.github.atomfrede.jadenticon.Jadenticon;
+import com.github.grandDAD2022.sheet.db.Post;
+import com.github.grandDAD2022.sheet.db.PostRepository;
 import com.github.grandDAD2022.sheet.db.User;
 import com.github.grandDAD2022.sheet.db.UserRepository;
 
@@ -23,6 +25,9 @@ public class MainController {
 	
 	@Autowired
 	private UserRepository userRepo;
+	
+	@Autowired
+	private PostRepository postRepo;
 	
 	@Autowired
 	private ImageUploader image;
@@ -51,6 +56,20 @@ public class MainController {
 		image.upload(user, new FileSystemResource(Jadenticon.from(user.getUsername()).png()));
 		// y crea una cookie
 		response.addCookie(new Cookie("_uuid", String.valueOf(user.getId())));
+		return "redirect:/";
+	}
+	@GetMapping("/posting")
+	public String postingForm() {
+		return "posting";
+	}
+	@PostMapping("/posting")
+	public String posting(Post post, HttpServletRequest request) throws IOException, TranscoderException {
+		// Busca el usuario
+		User user = userRepo.findByUsername(request.getUserPrincipal().getName()).get(0);
+		// Asignamos el usuario y guardamos el post en el repositorio
+		post.setDate("28-04-2022");
+		post.setUser(user);
+		postRepo.save(post);
 		return "redirect:/";
 	}
 }
