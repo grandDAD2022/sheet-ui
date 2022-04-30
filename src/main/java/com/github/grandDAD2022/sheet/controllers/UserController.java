@@ -71,9 +71,9 @@ public class UserController {
 			User s0 = new User("Rubén", "Vicente", "ruben@email.com", "09-02-2001", "699999999", "Hola!", "RubBen_19", "password");
 			User s1 = new User("Pepe", "Martín", "pepe@mail.es", "04-12-1992", "612345789", "Hi!", "pepe92", "password");
 		//Creamos los posts
-			Post p0 = new Post("21-02-2021", "Primer post");
-			Post p1 = new Post("19-02-2022", "Segundo post");
-			Post p2 = new Post("22-02-2022", "Primer post de la comunidad");
+			Post p0 = new Post("Primer post");
+			Post p1 = new Post("Segundo post");
+			Post p2 = new Post("Primer post de la comunidad");
 		//Creamos comentarios	
 			Comment c0 = new Comment("22-06-2023", "Primer comentario", null);
 			Comment c1 = new Comment("26-02-2022", "Holaaa!", null);
@@ -98,7 +98,9 @@ public class UserController {
 			s1.createNewComment(c3);
 		//Guardamos los usuarios en el repositorio
 			users.save(s0);
+			image.upload(s0, new FileSystemResource(Jadenticon.from(s0.getUsername()).png()));
 			users.save(s1);
+			image.upload(s1, new FileSystemResource(Jadenticon.from(s1.getUsername()).png()));
 		//Añadimos los posts a la comunidad
 			comm.addPost(p2);
 		//Guardamos la comunidad

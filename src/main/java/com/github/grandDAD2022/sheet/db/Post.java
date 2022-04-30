@@ -1,7 +1,10 @@
 package com.github.grandDAD2022.sheet.db;
 
 import java.sql.Blob;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -56,9 +59,12 @@ public class Post {
 	
 	protected Post() {}
 	
-	public Post(String date, String content) {
+	public Post(String content) {
 		this.user = null;
-		this.date = date;
+		Date date = new Date();
+		DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+        String today = formatter.format(date);
+        this.date = today;
 		this.content = content;
 		this.community = null;
 		this.image = null;

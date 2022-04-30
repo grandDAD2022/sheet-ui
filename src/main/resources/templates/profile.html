@@ -5,8 +5,8 @@
 <body>
 
 	<header th:replace="fragments/widgets :: header"></header>
-		
-	<div id="container">
+	
+	<div id="container">	
 		<div class="pfp">
 			<img class="avatar" th:src="${'/users/'+profileUser.id+'/pfp'}">
 			<div th:class="${ userId == profileUser.id } ? 'overlay' : 'hidden'">

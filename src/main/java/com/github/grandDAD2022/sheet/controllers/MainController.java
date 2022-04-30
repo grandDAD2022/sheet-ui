@@ -67,7 +67,6 @@ public class MainController {
 		// Busca el usuario
 		User user = userRepo.findByUsername(request.getUserPrincipal().getName()).get(0);
 		// Asignamos el usuario y guardamos el post en el repositorio
-		post.setDate("28-04-2022");
 		post.setUser(user);
 		postRepo.save(post);
 		return "redirect:/";
