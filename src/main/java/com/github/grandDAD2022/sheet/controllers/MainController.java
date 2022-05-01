@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.github.atomfrede.jadenticon.Jadenticon;
+import com.github.grandDAD2022.sheet.db.Community;
+import com.github.grandDAD2022.sheet.db.CommunityRepository;
 import com.github.grandDAD2022.sheet.db.Post;
 import com.github.grandDAD2022.sheet.db.PostRepository;
 import com.github.grandDAD2022.sheet.db.User;
@@ -28,6 +30,9 @@ public class MainController {
 	
 	@Autowired
 	private PostRepository postRepo;
+	
+	@Autowired
+	private CommunityRepository commRepo;
 	
 	@Autowired
 	private ImageUploader image;
@@ -67,8 +72,21 @@ public class MainController {
 		// Busca el usuario
 		User user = userRepo.findByUsername(request.getUserPrincipal().getName()).get(0);
 		// Asignamos el usuario y guardamos el post en el repositorio
-		post.setUser(user);
+		user.addPost(post);
 		postRepo.save(post);
+		return "redirect:/@" + user.getUsername();
+	}
+	@GetMapping("/create")
+	public String createCommunityForm () {
+		return "create";
+	}
+	@PostMapping("/create")
+	public String createCommunity(Community c, HttpServletRequest request) throws IOException, TranscoderException {
+		// Busca el usuario
+		User user = userRepo.findByUsername(request.getUserPrincipal().getName()).get(0);
+		// Asignamos el usuario y guardamos la comunidad en el repositorio
+		user.createCommunity(c);
+		commRepo.save(c);
 		return "redirect:/";
 	}
 }

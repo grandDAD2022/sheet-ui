@@ -1,6 +1,9 @@
 package com.github.grandDAD2022.sheet.db;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -25,6 +28,9 @@ public class Community {
 	@Column(name = "ID_COMUNIDAD", nullable = false, unique = true)
 	private long id;
 	
+	@Column(name = "NOMBRE_COMUNIDAD", nullable = false)
+	private String name;
+	
 	@Column(name = "FECHA_CREACION", nullable = false)
 	private String creation_date;
 	
@@ -48,12 +54,24 @@ public class Community {
 
 	protected Community() {}
 	
-	public Community(String creation_date, String comm_description) {
+	public Community(String name,String comm_description) {
+		this.name = name;
 		this.admin_user = null;
-		this.creation_date = creation_date;
+		Date date = new Date();
+		DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+        String today = formatter.format(date);
+		this.creation_date = today;
 		this.comm_description = comm_description;
 	}
 	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public User getAdmin_user() {
 		return admin_user;
 	}

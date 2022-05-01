@@ -80,7 +80,7 @@ public class UserController {
 			Comment c2 = new Comment("01-01-2023", "Feliz año!", null);
 			Comment c3 = new Comment("22-02-2022", "Buen post", null);
 		//Creamos una comunidad
-			Community comm = new Community("22-03-2022", "Primera comunidad!");
+			Community comm = new Community("First community","Primera comunidad!");
 		//Creo una notificacion
 			Notification n1 = new Notification("", "18/04/2022", "Bienvenido a Sheet!!");
 		//Añadimos la comunidad al usuario

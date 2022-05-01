@@ -26,7 +26,6 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "ID_USUARIO", nullable = false, unique = true)
-	
 	private long id;
 	
 	@Column(name = "NOMBRE_PERSONAL")

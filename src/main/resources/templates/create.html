@@ -1,0 +1,20 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/structure :: head" />
+<body>
+
+	<header th:replace="fragments/widgets :: header"></header>
+	<div id="container">
+		<h2>Crear tu comunidad</h2>
+		<form action="/create" method="post">
+		<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+			<p class="required"> Nombre</p>
+			<input type="text" name="name" placeholder="nombre" required />
+			<p class="required"> Descripción</p>
+			<textarea name="comm_description" rows=5 placeholder="¿Sobre que trata tu comunidad?" required></textarea>
+			<input type="submit" value="¡Crea tu comunidad!" />
+		</form>
+	</div>
+</body>
+</html>
