@@ -1,0 +1,21 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/structure :: head" />
+<body>
+
+	<header th:replace="fragments/widgets :: header"></header>
+
+	<div id="container">	
+		
+		<h2>[[ ${profileCommunity.name} ]]</h2>
+		<p th:if="${ profileCommunity.comm_description }" th:text="${ profileCommunity.comm_description }"></p>
+			<a href=><button class=>Unirse</button></a>
+			<a href=><button class=>Usuarios</button></a>
+		<div class="timeline grid" th:include="fragments/widgets :: timeline" 
+		data-masonry='{ "itemSelector": ".card", "gutter": 8, "horizontalOrder": true}'></div>
+		
+	</div>
+	
+</body>
+</html>

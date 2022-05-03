@@ -9,9 +9,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.batik.transcoder.TranscoderException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.github.atomfrede.jadenticon.Jadenticon;
@@ -87,6 +90,26 @@ public class MainController {
 		// Asignamos el usuario y guardamos la comunidad en el repositorio
 		user.createCommunity(c);
 		commRepo.save(c);
-		return "redirect:/";
+		return "redirect:/community/@" + c.getName();
+	}
+
+	@GetMapping("/community/@{name}")
+	public String community(@PathVariable String name, Model model) {
+		// TODO: comprobar cómo simplificar/generalizar este condicional
+		Community c = commRepo.findByName(name).get(0);
+		model.addAttribute("profileCommunity", c);
+		model.addAttribute("posts", c.getPosts());
+		
+		return "community";
+	}
+	
+	@GetMapping("/@{username}/communities")
+	public String commList(@PathVariable String username, Model model, HttpServletRequest request) {
+		// TODO: comprobar cómo simplificar/generalizar este condicional
+		User user = userRepo.findByUsername(request.getUserPrincipal().getName()).get(0);
+		model.addAttribute("user", user);
+		model.addAttribute("communities", user.getCommunities());
+		
+		return "communitiesList";
 	}
 }

@@ -1,0 +1,38 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/structure :: head" />
+<body>
+
+	<header th:replace="fragments/widgets :: header"></header>
+
+	<div id="container">
+
+		<h2>Comunidades de [[ ${user.username} ]]</h2>
+	
+		<table>
+    		<thead>
+    		<tr>
+        		<th>Nombre</th>
+        		<th>Descripción</th>
+        		<th>Administrador</th>
+        		<th>Fecha de creación</th>
+    		</tr>
+    		</thead>
+    		<tbody>
+    			<tr th:each="var : ${communities}">
+        		<td th:text="${var.name}"></td>
+        		<td th:text="${var.comm_description}"></td>
+        		<td th:text="${var.admin_user.username}"></td>
+        		<td th:text="${var.creation_date}"></td>
+        		<td>
+                    <a class="btn btn-warning" th:href="@{/community/@} + ${var.name}">Ir <i
+                            class="fa fa-edit"></i></a>
+                </td>
+    		</tr>
+    		</tbody>
+		</table>
+	</div>
+	
+</body>
+</html>

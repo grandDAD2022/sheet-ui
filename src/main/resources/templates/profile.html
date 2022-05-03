@@ -16,7 +16,7 @@
 		<h2>[[ ${profileUser.username} ]]</h2>
 		<p th:if="${ profileUser.bio }" th:text="${ profileUser.bio }"></p>
 			<a href="/create/"><button class=>¡Crea tu comunidad!</button></a>
-			<a href=><button class=>Mis comunidades</button></a>
+			<a href="/@${ profileUser.username }/communities"><button class=>Mis comunidades</button></a>
 		<div class="timeline grid" th:include="fragments/widgets :: timeline" 
 		data-masonry='{ "itemSelector": ".card", "gutter": 8, "horizontalOrder": true}'></div>
 	</div>
