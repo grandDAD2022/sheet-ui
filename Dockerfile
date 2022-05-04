@@ -8,8 +8,9 @@ FROM maven:3-eclipse-temurin-17-alpine
 COPY ./pom.xml ./pom.xml
 COPY ./src ./src
 
+ARG BUILD_VARS
 RUN mvn dependency:go-offline -B
-RUN mvn package
+RUN mvn package $BUILD_VARS
 
 ## Execution stage
 

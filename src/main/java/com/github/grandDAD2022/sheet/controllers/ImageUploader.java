@@ -2,6 +2,7 @@ package com.github.grandDAD2022.sheet.controllers;
 
 import java.util.Map;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.Resource;
@@ -24,7 +25,7 @@ public class ImageUploader {
 		WebClient client = WebClient.builder()
 				.codecs(c ->
 					c.defaultCodecs().maxInMemorySize(8 * 1024 * 1024))
-				.baseUrl("http://localhost:42069")
+				.baseUrl(System.getenv().getOrDefault("SHEET_MEDIA_URL", "http://localhost:42069"))
 				.build();
         MultipartBodyBuilder builder = new MultipartBodyBuilder();
         builder.part("body", r)
