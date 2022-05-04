@@ -9,6 +9,8 @@
 			<p th:text="${username}"></p>
 			<a href="/profile/"><img class="avatar" th:src="${'/users/'+userId+'/pfp'}"></a>
 			<a href="/posting/"><button class=>¡Publica!</button></a>
+			<a href="/create/"><button class=>¡Crea tu comunidad!</button></a>
+			<a href="/@${ profileUser.username }/communities"><button class=>Mis comunidades</button></a>
 			<form method="POST" action="/logout">
 				<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 				<button type="submit" name="submit"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>

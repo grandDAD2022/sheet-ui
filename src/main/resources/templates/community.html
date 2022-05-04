@@ -7,14 +7,40 @@
 	<header th:replace="fragments/widgets :: header"></header>
 
 	<div id="container">	
-		
+
 		<h2>[[ ${profileCommunity.name} ]]</h2>
 		<p th:if="${ profileCommunity.comm_description }" th:text="${ profileCommunity.comm_description }"></p>
-			<a href=><button class=>Unirse</button></a>
-			<a href=><button class=>Usuarios</button></a>
+		
+		<a th:href="@{/@} + ${admin}" >Ver administrador</a>
+		<br>
+		<a href=>Unirse</a>
+		<br>
+		<br>
 		<div class="timeline grid" th:include="fragments/widgets :: timeline" 
 		data-masonry='{ "itemSelector": ".card", "gutter": 8, "horizontalOrder": true}'></div>
 		
+		<h2>Usuarios de [[ ${ profileCommunity.name } ]]</h2>
+	
+		<table class="table" id="tableImport">
+    		<thead>
+    		<tr>
+    			<th>Imagen</th>
+        		<th>Nombre</th>
+    		</tr>
+    		</thead>
+    		<tbody>
+    			<tr th:each="var : ${usersComm}">
+    			<td>
+    				<img class="avatar" th:src="${'/users/'+var.id+'/pfp'}">
+    			</td>
+        		<td th:text="${var.username}"></td>
+        		<td>
+                    <a class="btn btn-warning" th:href="@{/@} + ${var.username}">Ver perfil <i
+                            class="fa fa-edit"></i></a>
+                </td>
+    		</tr>
+    		</tbody>
+		</table>
 	</div>
 	
 </body>

@@ -1,6 +1,7 @@
 package com.github.grandDAD2022.sheet.controllers;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -40,7 +41,7 @@ public class CommunityController {
 	}
 	
 	@GetMapping("/{id}")
-	@Operation(summary = "Obtener lista de comunidades a partir de una id")
+	@Operation(summary = "Obtener una comunidad a partir de una id")
 	public Community getCommunity(@PathVariable long id) {
 		return communities.findById(id).orElseThrow();
 	}
