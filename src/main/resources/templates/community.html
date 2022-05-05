@@ -24,15 +24,12 @@
 		<table class="table" id="tableImport">
     		<thead>
     		<tr>
-    			<th>Imagen</th>
         		<th>Nombre</th>
     		</tr>
     		</thead>
     		<tbody>
     			<tr th:each="var : ${usersComm}">
-    			<td>
-    				<img class="avatar" th:src="${'/users/'+var.id+'/pfp'}">
-    			</td>
+
         		<td th:text="${var.username}"></td>
         		<td>
                     <a class="btn btn-warning" th:href="@{/@} + ${var.username}">Ver perfil <i

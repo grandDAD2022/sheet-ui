@@ -6,9 +6,9 @@ import java.util.Collection;
 import javax.annotation.PostConstruct;
 
 import org.apache.batik.transcoder.TranscoderException;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -140,6 +140,7 @@ public class UserController {
 		return users.findById(id).orElseThrow();
 	}
 	
+	@Cacheable
 	@GetMapping(value = "/{id}/pfp", produces = MediaType.IMAGE_PNG_VALUE)
 	@Operation(summary = "Obtener foto de perfil de usuario")
 	public @ResponseBody Mono<ResponseEntity<byte[]>> getProfileImage(@PathVariable long id) {
@@ -154,6 +155,7 @@ public class UserController {
 				.toEntity(byte[].class);
 	}
 	
+	@CachePut
 	@PutMapping(value = "/{id}/pfp", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	@Operation(summary = "Actualizar foto de perfil de usuario")
 	public void updateProfileImage(@PathVariable long id, @RequestParam MultipartFile imageFile) throws IOException {

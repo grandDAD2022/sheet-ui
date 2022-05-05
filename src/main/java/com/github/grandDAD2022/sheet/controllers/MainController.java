@@ -65,26 +65,36 @@ public class MainController {
 		return "redirect:/";
 	}
 	@GetMapping("/posting")
-	public String postingForm() {
+	public String postingForm(Model model, HttpServletRequest request) {
+		User user = userRepo.findByUsername(request.getUserPrincipal().getName()).get(0);
+		model.addAttribute("userId", user.getId());
+		model.addAttribute("username", user.getUsername());
 		return "posting";
 	}
 	@PostMapping("/posting")
-	public String posting(Post post, HttpServletRequest request) throws IOException, TranscoderException {
+	public String posting(Post post,Model model, HttpServletRequest request) throws IOException, TranscoderException {
 		// Busca el usuario
 		User user = userRepo.findByUsername(request.getUserPrincipal().getName()).get(0);
+		model.addAttribute("userId", user.getId());
+		model.addAttribute("username", user.getUsername());
 		// Asignamos el usuario y guardamos el post en el repositorio
 		user.addPost(post);
 		postRepo.save(post);
 		return "redirect:/@" + user.getUsername();
 	}
 	@GetMapping("/create")
-	public String createCommunityForm () {
+	public String createCommunityForm (Model model, HttpServletRequest request) {
+		User user = userRepo.findByUsername(request.getUserPrincipal().getName()).get(0);
+		model.addAttribute("userId", user.getId());
+		model.addAttribute("username", user.getUsername());
 		return "create";
 	}
 	@PostMapping("/create")
-	public String createCommunity(Community c, HttpServletRequest request) throws IOException, TranscoderException {
+	public String createCommunity(Community c,Model model, HttpServletRequest request) throws IOException, TranscoderException {
 		// Busca el usuario
 		User user = userRepo.findByUsername(request.getUserPrincipal().getName()).get(0);
+		model.addAttribute("userId", user.getId());
+		model.addAttribute("username", user.getUsername());
 		// Asignamos el usuario y guardamos la comunidad en el repositorio
 		user.createCommunity(c);
 		commRepo.save(c);
@@ -92,8 +102,11 @@ public class MainController {
 	}
 
 	@GetMapping("/community/@{id}")
-	public String community(@PathVariable long id, Model model) {
+	public String community(@PathVariable long id, Model model, HttpServletRequest request) {
 		Community c = commRepo.findById(id).get();
+		User user = userRepo.findByUsername(request.getUserPrincipal().getName()).get(0);
+		model.addAttribute("userId", user.getId());
+		model.addAttribute("username", user.getUsername());
 		model.addAttribute("profileCommunity", c);
 		model.addAttribute("usersComm", c.getUser_in_community());
 		model.addAttribute("admin", c.getAdmin_user().getUsername());
@@ -105,6 +118,8 @@ public class MainController {
 	@GetMapping("/@{username}/communities")
 	public String commList(@PathVariable String username, Model model, HttpServletRequest request) {
 		User user = userRepo.findByUsername(request.getUserPrincipal().getName()).get(0);
+		model.addAttribute("userId", user.getId());
+		model.addAttribute("username", user.getUsername());
 		model.addAttribute("user", user);
 		model.addAttribute("communities", user.getCommunities());
 		
