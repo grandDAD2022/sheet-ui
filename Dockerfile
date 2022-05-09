@@ -18,5 +18,6 @@ FROM eclipse-temurin:17-jre-alpine
 
 COPY --from=0 ./target/*.jar sheet-ui.jar
 
+ARG SPRING_ARGS
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "sheet-ui.jar"]
+ENTRYPOINT java -jar sheet-ui.jar $SPRING_ARGS
