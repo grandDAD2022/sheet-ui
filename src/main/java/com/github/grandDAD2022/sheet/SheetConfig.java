@@ -18,7 +18,6 @@ import org.springframework.session.hazelcast.HazelcastIndexedSessionRepository;
 import org.springframework.session.hazelcast.HazelcastSessionSerializer;
 import org.springframework.session.hazelcast.PrincipalNameExtractor;
 import org.springframework.session.hazelcast.config.annotation.SpringSessionHazelcastInstance;
-import org.springframework.session.hazelcast.config.annotation.web.http.EnableHazelcastHttpSession;
 import org.springframework.web.filter.ForwardedHeaderFilter;
 
 import com.hazelcast.config.AttributeConfig;
@@ -36,7 +35,6 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 
 @Configuration
-@EnableHazelcastHttpSession
 public class SheetConfig {
 	@Autowired
     Environment environment;
@@ -103,29 +101,6 @@ public class SheetConfig {
 		@Override
 		protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 			auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-		}
-		
-		@Bean
-		@SpringSessionHazelcastInstance
-		public HazelcastInstance hazelcastInstance() {
-			Config config = new Config();
-			JoinConfig joinConfig = config.getNetworkConfig().getJoin();
-			
-			AttributeConfig attributeConfig = new AttributeConfig()
-					.setName(HazelcastIndexedSessionRepository.PRINCIPAL_NAME_ATTRIBUTE)
-					.setExtractorClassName(PrincipalNameExtractor.class.getName());
-			
-			config.getMapConfig(HazelcastIndexedSessionRepository.DEFAULT_SESSION_MAP_NAME) 
-					.addAttributeConfig(attributeConfig).addIndexConfig(
-							new IndexConfig(IndexType.HASH, Hazelcast4IndexedSessionRepository.PRINCIPAL_NAME_ATTRIBUTE));
-			SerializerConfig serializerConfig = new SerializerConfig();
-			serializerConfig.setImplementation(new HazelcastSessionSerializer()).setTypeClass(MapSession.class);
-			config.getSerializationConfig().addSerializerConfig(serializerConfig);
-			
-			joinConfig.getMulticastConfig().setEnabled(true);
-			joinConfig.getTcpIpConfig().setEnabled(false);
-			
-			return Hazelcast.newHazelcastInstance(config);
 		}
 	}
 }
