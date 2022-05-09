@@ -3,6 +3,8 @@ package com.github.grandDAD2022.sheet.controllers;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,6 +41,7 @@ public class CommunityController {
 		return communities.findAll();
 	}
 	
+	@Cacheable(cacheNames = "comunidades", condition = "#id > 1")
 	@GetMapping("/{id}")
 	@Operation(summary = "Obtener una comunidad a partir de una id")
 	public Community getCommunity(@PathVariable long id) {
@@ -90,9 +93,10 @@ public class CommunityController {
 		communities.deleteAll();
 	}
 	
+	@CachePut(cacheNames="comunidades", key="#dtoRequest.id")
 	@PutMapping("/{id}")
 	@Operation(summary = "Actualizar una comunidad")
-	public Community updateComment (@PathVariable long id, @RequestBody Community newCommunity) {
+	public Community updateCommunity (@PathVariable long id, @RequestBody Community newCommunity) {
 		communities.findById(id).orElseThrow();
 		Community c = communities.getById(id);
 		newCommunity.setId(id);
