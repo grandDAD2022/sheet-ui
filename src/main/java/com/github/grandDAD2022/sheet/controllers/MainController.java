@@ -55,6 +55,7 @@ public class MainController {
 	public String signupForm() {
 		return "signup";
 	}
+
 	@PostMapping("/signup")
 	public String signup(User user, HttpServletResponse response) throws IOException, TranscoderException {
 		// Registra el usuario
@@ -89,6 +90,7 @@ public class MainController {
 		model.addAttribute("username", user.getUsername());
 		return "create";
 	}
+
 	@PostMapping("/create")
 	public String createCommunity(Community c,Model model, HttpServletRequest request) throws IOException, TranscoderException {
 		// Busca el usuario
@@ -114,7 +116,7 @@ public class MainController {
 		
 		return "community";
 	}
-	
+
 	@GetMapping("/@{username}/communities")
 	public String commList(@PathVariable String username, Model model, HttpServletRequest request) {
 		User user = userRepo.findByUsername(request.getUserPrincipal().getName()).get(0);

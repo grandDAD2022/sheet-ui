@@ -19,7 +19,7 @@ public class CacheController {
 	@RequestMapping(value="/cache", method=RequestMethod.GET)
 	public Map<Object, Object> getCacheContent() {
 		ConcurrentMapCacheManager cacheMgr = (ConcurrentMapCacheManager) cacheManager;
-		ConcurrentMapCache cache = (ConcurrentMapCache) cacheMgr.getCache("comunidades");
+		ConcurrentMapCache cache = (ConcurrentMapCache) cacheMgr.getCache("cache");
 		return cache.getNativeCache();
 	}
 }

@@ -12,22 +12,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.session.MapSession;
-import org.springframework.session.hazelcast.Hazelcast4IndexedSessionRepository;
-import org.springframework.session.hazelcast.HazelcastIndexedSessionRepository;
-import org.springframework.session.hazelcast.HazelcastSessionSerializer;
-import org.springframework.session.hazelcast.PrincipalNameExtractor;
-import org.springframework.session.hazelcast.config.annotation.SpringSessionHazelcastInstance;
 import org.springframework.web.filter.ForwardedHeaderFilter;
-
-import com.hazelcast.config.AttributeConfig;
-import com.hazelcast.config.Config;
-import com.hazelcast.config.IndexConfig;
-import com.hazelcast.config.IndexType;
-import com.hazelcast.config.JoinConfig;
-import com.hazelcast.config.SerializerConfig;
-import com.hazelcast.core.Hazelcast;
-import com.hazelcast.core.HazelcastInstance;
 
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;

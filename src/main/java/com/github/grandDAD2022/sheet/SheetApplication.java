@@ -27,7 +27,7 @@ public class SheetApplication {
 	@Bean
 	public CacheManager cacheManager() {
 		LOG.info("Activating cache...");
-		return new ConcurrentMapCacheManager("comunidades");
+		return new ConcurrentMapCacheManager("cache");
 	}
 	
 	@Bean
