@@ -7,14 +7,30 @@
 		<h1 class="title"><a href="/">Sheet</a></h1>
 		<div th:if="${userId}" class="userSettings">
 			<p th:text="${username}"></p>
-			<a href="/profile/"><img class="avatar" th:src="${'/users/'+userId+'/pfp'}"></a>
-			<a href="/posting/"><button class=>¡Publica!</button></a>
-			<a href="/create/"><button class=>¡Crea tu comunidad!</button></a>
-			<a href="/@${ profileUser.username }/communities"><button class=>Mis comunidades</button></a>
+			<a href="/profile"><img class="avatar" th:src="${'/users/'+userId+'/pfp'}"></a>
+			<a href="/posting" class="uploadBtn" title="Crea un post nuevo"><i class="fa-solid fa-feather-pointed"></i></a>
+			<a href="/create" class="createCommunityBtn" title="Crea una comunidad nueva"><i class="fa-solid fa-person-circle-plus"></i></a>
+			<a href="/@${ profileUser.username }/communities" title="Mis comunidades"><i class="fa-solid fa-people-roof"></i></a>
 			<form method="POST" action="/logout">
 				<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 				<button type="submit" name="submit"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
 			</form>
+			
+			<div class="hidden uploadPost popup" th:include="fragments/widgets :: uploadPost"></div>
+			
+			<script>
+				let headerEvent = (e) => {
+					let uploadPost = document.querySelector('.uploadPost.popup');
+					let uploadBtn  = document.querySelector('.uploadBtn');
+					uploadBtn.href = 'javascript:;';
+					uploadBtn.addEventListener('click', (e) => {
+						uploadPost.classList.remove('hidden');
+					});
+				}
+				if (document.readyState === "complete" || document.readyState === "loaded")
+					headerEvent()
+				else window.addEventListener('DOMContentLoaded', headerEvent);
+			</script>
 		</div>
 	</div>
 </header>
@@ -45,6 +61,17 @@
 			  onload: () => this.onScriptLoaded()
 		}))});
 	</script>
+</div>
+
+<div class="uploadPost" th:fragment="uploadPost">
+	<h2>¡Vamos, sin miedo!</h2>
+	
+	<form action="/posting" method="post">
+		<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+		<p class="required"> Cuenta, cuenta</p>
+		<textarea name="content" rows=3 placeholder="We're no strangers to love. You know the rules and so do I..." required></textarea>
+		<input type="submit" value="¡Publica!" />
+	</form>
 </div>
 
 <div class="login">

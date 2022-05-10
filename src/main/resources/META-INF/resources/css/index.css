@@ -19,7 +19,7 @@ img.avatar {
 }
 
 .hidden {
-	display: none;
+	display: none !important;
 }
 
 /*
@@ -90,6 +90,35 @@ header>.content>.userSettings {
 #container>.timeline>.post.card>.comments.border:hover>* {
 	transform: translate(8px);
 	transition: transform .7s;
+}
+
+/*
+	Upload post form
+*/
+.uploadPost {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	
+}
+.uploadPost.popup {
+	z-index: 999;
+	position: absolute;
+	width: 50vw; height: calc(50vh - 64px);
+	left: 25vw; top: calc(25vh + 64px);
+	padding: 16px;
+	box-sizing: border-box;
+	background: #fffd;
+	box-shadow: 0 0 8px;
+	border-radius: 8px;
+}
+.uploadPost > form {
+	max-width: 40vw;
+}
+.uploadPost > form > textarea {
+	width: 100%;
+	resize: none;
 }
 
 /*
