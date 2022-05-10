@@ -99,9 +99,9 @@ public class UserController {
 			s1.createNewComment(c3);
 		//Guardamos los usuarios en el repositorio
 			users.save(s0);
-			image.upload(s0, new FileSystemResource(Jadenticon.from(s0.getUsername()).png()));
+			image.uploadPfp(s0, new FileSystemResource(Jadenticon.from(s0.getUsername()).png()));
 			users.save(s1);
-			image.upload(s1, new FileSystemResource(Jadenticon.from(s1.getUsername()).png()));
+			image.uploadPfp(s1, new FileSystemResource(Jadenticon.from(s1.getUsername()).png()));
 		//Añadimos los posts a la comunidad
 			comm.addPost(p2);
 		//Guardamos la comunidad
@@ -160,7 +160,7 @@ public class UserController {
 	@Operation(summary = "Actualizar foto de perfil de usuario")
 	public void updateProfileImage(@PathVariable long id, @RequestParam MultipartFile imageFile) throws IOException {
 		User user = users.findById(id).orElseThrow();
-		image.upload(user, imageFile.getResource());
+		image.uploadPfp(user, imageFile.getResource());
 		users.save(user);
  	}
 	
@@ -203,7 +203,7 @@ public class UserController {
 	@Operation(summary = "Crear un usuario")
 	public User createUser(@RequestBody User user) throws IOException, TranscoderException {
 		users.save(user);
-		image.upload(user, new FileSystemResource(Jadenticon.from(user.getUsername()).png()));
+		image.uploadPfp(user, new FileSystemResource(Jadenticon.from(user.getUsername()).png()));
 		return user;
 	}
 	

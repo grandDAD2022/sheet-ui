@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.github.grandDAD2022.sheet.db.Post;
+import com.github.grandDAD2022.sheet.db.PostRepository;
 import com.github.grandDAD2022.sheet.db.User;
 import com.github.grandDAD2022.sheet.db.UserRepository;
 
@@ -20,7 +22,10 @@ public class ImageUploader {
 	@Autowired
 	private UserRepository users;
 	
-	public void upload(User u, Resource r) {
+	@Autowired
+	private PostRepository posts;
+	
+	public void uploadPfp(User u, Resource r) {
 		WebClient client = WebClient.builder()
 				.codecs(c ->
 					c.defaultCodecs().maxInMemorySize(8 * 1024 * 1024))
@@ -38,5 +43,25 @@ public class ImageUploader {
 		    .block();
 		u.setImageId(res.get("id"));
 		users.save(u);
+	}
+	
+	public void uploadPostPic(Post p, Resource r) {
+		WebClient client = WebClient.builder()
+				.codecs(c ->
+					c.defaultCodecs().maxInMemorySize(8 * 1024 * 1024))
+				.baseUrl(System.getenv().getOrDefault("SHEET_MEDIA_URL", "http://localhost:42069"))
+				.build();
+        MultipartBodyBuilder builder = new MultipartBodyBuilder();
+        builder.part("body", r)
+                .header("Content-Type", "Multipart/related; type=\"image/png\"")
+                .header("Content-Disposition", "form-data; name=mediaFile; filename=upload.png");
+        Map<String,String> res = client.post().uri("/")
+			.contentType(MediaType.MULTIPART_FORM_DATA)
+			.body(BodyInserters.fromMultipartData(builder.build()))
+			.retrieve()
+		    .bodyToMono(new ParameterizedTypeReference<Map<String,String>>(){})
+		    .block();
+        p.setImage(res.get("id"));
+        posts.save(p);
 	}
 }

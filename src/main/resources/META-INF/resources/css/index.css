@@ -85,6 +85,9 @@ header>.content>.userSettings {
 	width: 32px;
 	height: 32px;
 }
+#container>.timeline>.post.card>.body>img {
+	max-width: 100%;
+}
 #container>.timeline>.post.card>.comments.border>* {
 	transition: transform .7s;
 }

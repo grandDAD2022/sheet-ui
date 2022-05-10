@@ -45,6 +45,9 @@ public class PostController {
 	@Autowired
 	private UserRepository users;
 	
+	@Autowired
+	private ImageUploader image;
+	
 	@GetMapping("/")
 	@Operation(summary = "Obtener lista de todas las publicaciones")
 	public Collection<Post> getposts() {
@@ -75,11 +78,14 @@ public class PostController {
 	@PostMapping("/")
 	@Operation(summary = "Crear una publicación")
 	@CacheEvict
-	public Post createpost(@RequestBody Post post, @RequestParam long idAuthor) {
+	public Post createpost(@RequestBody Post post,
+			@RequestParam MultipartFile pic,
+			@RequestParam long idAuthor) {
 		users.findById(idAuthor).orElseThrow();
 		User u = users.getById(idAuthor);
 		post.setUser(u);
 		posts.save(post);
+		if (!pic.isEmpty()) image.uploadPostPic(post, pic.getResource());
 		return post;
 	}
 	
@@ -108,6 +114,7 @@ public class PostController {
 		
 		return newpost;
 	}
+	
 	
 	@PostMapping("/{id}/image")
 	public ResponseEntity<Object> uploadImage(@PathVariable long id, @RequestParam MultipartFile imageFile) throws IOException {

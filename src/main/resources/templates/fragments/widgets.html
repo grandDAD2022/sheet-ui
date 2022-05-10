@@ -41,7 +41,7 @@
 		<a th:text="${ post.getUser().getUsername() }"></a>
 	</div>
 	<div class="body">
-		<img th:if="${ post.getImage() }" src="https://picsum.photos/1280/720"></img>
+		<img th:if="${ post.getImage() }" th:src="${ '/img/' + post.getImage() }"></img>
 		<p class="border" th:if="${ post.getContent() }" th:text="${ post.getContent() }"></p>
 	</div>
 	<div class="comments border">
@@ -67,10 +67,11 @@
 <div class="uploadPost" th:fragment="uploadPost">
 	<h2>¡Vamos, sin miedo!</h2>
 	
-	<form action="/posting" method="post">
+	<form action="/posting" method="post" enctype="multipart/form-data">
 		<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 		<p class="required"> Cuenta, cuenta</p>
 		<textarea name="content" rows=3 placeholder="We're no strangers to love. You know the rules and so do I..." required></textarea>
+		<input type="file" name="pic">
 		<input type="submit" value="¡Publica!" />
 	</form>
 </div>
