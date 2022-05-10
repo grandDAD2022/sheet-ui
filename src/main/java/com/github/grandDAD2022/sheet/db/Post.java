@@ -32,7 +32,7 @@ public class Post {
 	@Column(name = "FECHA_PUBLICACION", nullable = false)
 	private String date;
 	
-	@Column(name = "TEXTO_PUBLICACION", nullable = false)
+	@Column(name = "TEXTO_PUBLICACION", nullable = false, length = 3000)
 	private String content;
 	
 	@Column(name = "IMAGEN", nullable = true)

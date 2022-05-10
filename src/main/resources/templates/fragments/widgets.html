@@ -35,12 +35,15 @@
 	</div>
 </header>
 
-<div class="post card" th:fragment="post(body)">
+<div class="post card" th:fragment="post">
 	<div class="title border">
 		<img class="avatar" th:src="${'/users/' + post.user.id + '/pfp'}">
 		<a th:text="${ post.getUser().getUsername() }"></a>
 	</div>
-	<div th:replace="${body}"></div>
+	<div class="body">
+		<img th:if="${ post.getImage() }" src="https://picsum.photos/1280/720"></img>
+		<p class="border" th:if="${ post.getContent() }" th:text="${ post.getContent() }"></p>
+	</div>
 	<div class="comments border">
 		<a th:text='${ post.getComment().size() + " comentario" + (post.comment.size() == 1 ? "" : "s") }'></a>
 		<i class="fa-solid fa-arrow-right"></i>
@@ -49,9 +52,7 @@
 
 <div class="timeline" th:fragment="timeline"
 		data-masonry='{ "itemSelector": ".card", "gutter": 8, "horizontalOrder": true}'>
-	<div class="post card" th:if="${posts}" th:each="post,iterStat : ${posts}" th:include=":: post(~{::.body})">
-		<img class="body" src="https://picsum.photos/1280/720"></img>
-	</div>
+	<div class="post card" th:if="${posts}" th:each="post,iterStat : ${posts}" th:include=":: post"></div>
 	
 	<script>
 		window.addEventListener("load", (e) => {

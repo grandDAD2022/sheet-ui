@@ -73,10 +73,11 @@ header>.content>.userSettings {
 #container>.timeline>.post.card>* {
 	width: 100%;
 }
-#container>.timeline>.post.card>.border {
+#container>.timeline>.post.card .border {
 	padding: 16px;
 	display: flex;
 	gap: 8px;
+	box-sizing: border-box;
 	align-items: center;
 }
 #container>.timeline>.post.card>.title.border>.avatar,
